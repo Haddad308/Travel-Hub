@@ -1,16 +1,16 @@
-// import { useState } from 'react'
+import Home from "./components/home";
+import { Sidebar } from "./components/sideBar";
 
-import './App.css'
 
-function App() {
-  
+
+const App = () => {
 
   return (
     <>
-      <h1 className='text-cyan-500' >بسم الله الرحمن الرحيم</h1>
-      <h3>AdminPanel Project</h3>
+      <Sidebar/>
+      <Home/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
