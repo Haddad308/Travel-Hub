@@ -83,7 +83,7 @@ const TABLE_ROWS = [
     },
 ];
 
-export function SortableTable() {
+export function Table() {
     return (
         <Card className="h-full w-full overflow-hidden rounded-none">
             <CardHeader floated={false} shadow={false} className="rounded-none">
