@@ -3,32 +3,35 @@ import {
     List,
     ListItem,
     ListItemPrefix,
-    ListItemSuffix,
-    Chip,
+    Typography,
+    // ListItemSuffix,
+    // Chip,
 } from "@material-tailwind/react";
 import {
     PresentationChartBarIcon,
     Cog6ToothIcon,
     UserPlusIcon,
-    InboxIcon,
+    // InboxIcon,
     PowerIcon,
-    // HomeIcon,
+    MapIcon,
     UsersIcon,
     CalendarIcon,
     CurrencyDollarIcon
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
+import { WrenchIcon } from "@heroicons/react/24/outline";
 
 
 
 export function Sidebar() {
     return (
         <>
-            <div className="top-0 bottom-0 lg:left-0 fixed  overflow-y-auto w-[300px] bg-blue-gray-200 text-center " >
-                <header className="py-9">
-                    <h1>Logo</h1>
+            <div className="top-0 bottom-0 lg:left-0 fixed  overflow-y-auto w-[250px] bg-[#415A77] text-white" >
+                <header className=" h-[70px] bg-[#344860] p-5 flex content-center ">
+                    <MapIcon className="h-6 w-6 mt-1 mr-2" />
+                    <h1 className="text-2xl font-semibold	" > Logo here</h1>
                 </header>
-                <List>
+                <List className="text-white" >
                     <Link to={"/"} >
                         <ListItem>
                             <ListItemPrefix>
@@ -37,14 +40,6 @@ export function Sidebar() {
                             Dashboard
                         </ListItem>
                     </Link>
-                    {/* <Link to={"/settings"}>
-                        <ListItem>
-                            <ListItemPrefix>
-                                <HomeIcon className="h-5 w-5" />
-                            </ListItemPrefix>
-                            Home
-                        </ListItem>
-                    </Link> */}
                     <Link to={"/users"}>
                         <ListItem>
                         <ListItemPrefix>
@@ -53,19 +48,27 @@ export function Sidebar() {
                         Users
                     </ListItem>
                     </Link>
-                    <Link to={ "/notification"}>
+                    <Link to={"/Services"}>
+                        <ListItem>
+                            <ListItemPrefix>
+                                <WrenchIcon className="h-5 w-5" />
+                            </ListItemPrefix>
+                            Services
+                        </ListItem>
+                    </Link>
+                    {/* <Link to={ "/notification"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <InboxIcon className="h-5 w-5" />
                             </ListItemPrefix>
                             Notification
                             <ListItemSuffix>
-                                <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+                                <Chip value="14" size="sm" variant="gradient" color="white" className="rounded-full" />
                             </ListItemSuffix>
                         </ListItem>
-                    </Link>
+                    </Link> */}
                     <Link to={ "/reservation"}>
-                        <ListItem>
+                        <ListItem variant='small'>
                             <ListItemPrefix>
                                 <CalendarIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -103,8 +106,15 @@ export function Sidebar() {
                         Log Out
                     </ListItem>
                 </List>
-                <footer className="absolute w-full  bottom-0 p-3  bg-gray-800 " >
-                    <AvatarWithText />
+                <footer className="absolute w-full  bottom-0 p-3" >
+                    <AvatarWithText size={"md"}>
+                        <Typography color="white" variant='small' >
+                            Lania Andrew
+                        </Typography>
+                        <Typography variant="small" color="white" className="text-[#E8E8E8] font-thin">
+                            lania.andrew@gmail.com
+                        </Typography>
+                    </AvatarWithText>
                 </footer>
             </div>
         </>

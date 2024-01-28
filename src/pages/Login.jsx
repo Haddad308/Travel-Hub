@@ -18,12 +18,13 @@ export default function Login() {
         setIsLoading(true)
         setApiError("");
 
-        let { data } = await axios.post("https://ecommerce.routemisr.com/api/v1/auth/signin", values).catch((error) => {
-            setApiError(error.response.data.message);
+        let data  = await axios.post("http://localhost:3000/api/v1/auth/email/login", values).catch((error) => {
+            console.log(error.message);
+            setApiError(error.message);
             setIsLoading(false);
         });
-        console.log(data.message);
-        if (data.message === "success") {
+        
+        if (data?.status === 200) {
             setIsLoading(false)
             navigate("/");
         }
@@ -47,10 +48,8 @@ export default function Login() {
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-
                 <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
-
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
