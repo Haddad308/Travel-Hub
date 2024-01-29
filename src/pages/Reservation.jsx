@@ -71,12 +71,26 @@ export default function Reservation() {
             "info3": "2 Nights"
         },
     ]
-
-
+    const TABS = [
+        {
+            label: "All",
+            value: "all",
+        },
+        {
+            label: "Reserved",
+            value: "reserved",
+        },
+        {
+            label: "Pending",
+            value: "pending",
+        },
+        {
+            label: "Cancelled",
+            value: "cancelled",
+        }
+    ];
     
     const [filtered,setFiltered] = useState([]);
-    // setFiltered(reservations);
-
     const filterReservation = useCallback ((reservationStatus) => {
         if (reservationStatus === "All") {
             setFiltered(reservations);
@@ -92,10 +106,9 @@ export default function Reservation() {
 
     return (
         <div className="p-6">
-            <TabsComponent filterReservation={filterReservation}>
+            <TabsComponent filter={filterReservation} TABS={TABS} search={false}>
                 <div className="grid grid-cols-2 gap-3 px-5" >
                     {filtered?.map(({ AgencyName, AgencyEmail, AgencyContact, status, info1, info2, info3 },index)=>{
-                        
                         return <ReservationCard key={index} AgencyContact={AgencyContact} AgencyName={AgencyName} AgencyEmail={AgencyEmail}
                             info1={info1} info2={info2} info3={info3} status={status}/>
                     })}

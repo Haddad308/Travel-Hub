@@ -40,7 +40,7 @@ export function Sidebar() {
                             Dashboard
                         </ListItem>
                     </Link>
-                    <Link to={"/users"}>
+                    <Link to={"/Users"}>
                         <ListItem>
                         <ListItemPrefix>
                             <UsersIcon className="h-5 w-5" />
@@ -67,7 +67,7 @@ export function Sidebar() {
                             </ListItemSuffix>
                         </ListItem>
                     </Link> */}
-                    <Link to={ "/reservation"}>
+                    <Link to={ "/Reservation"}>
                         <ListItem variant='small'>
                             <ListItemPrefix>
                                 <CalendarIcon className="h-5 w-5" />
@@ -75,7 +75,7 @@ export function Sidebar() {
                             Reservation
                         </ListItem>
                     </Link>
-                    <Link to={ "/finance"}>
+                    <Link to={ "/Finance"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <CurrencyDollarIcon className="h-5 w-5" />
@@ -83,7 +83,7 @@ export function Sidebar() {
                             Finance
                         </ListItem>
                     </Link>
-                    <Link to={ "/admins"}>
+                    <Link to={ "/Admins"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <UserPlusIcon className="h-5 w-5" />
@@ -91,7 +91,7 @@ export function Sidebar() {
                             Admins
                         </ListItem>
                     </Link>
-                    <Link to={ "/settings"}>
+                    <Link to={ "/Settings"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <Cog6ToothIcon className="h-5 w-5" />
@@ -99,7 +99,7 @@ export function Sidebar() {
                             Setting
                         </ListItem>
                     </Link>
-                    <ListItem>
+                    <ListItem  >
                         <ListItemPrefix>
                             <PowerIcon className="h-5 w-5" />
                         </ListItemPrefix>

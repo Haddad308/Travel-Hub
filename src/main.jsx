@@ -5,14 +5,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+      <App />
   </React.StrictMode>,
 );
 
-// TODO:Login
-//! 1.protect routes 
-//! 2.add token signin 
-//! 3.logout remove
-
-// TODO:Tables
-//! 3- I need to use context. 

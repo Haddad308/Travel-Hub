@@ -10,26 +10,33 @@ import Settings from "./pages/Settings";
 import Users from "./pages/Users";
 import NotFound from "./pages/NotFound";
 import Notification from './pages/Notification';
+import { SelectedServiceContext } from './contexts/ServicesContext';
+import { useState } from 'react';
 
 let routers = createBrowserRouter([{
-  path:"",element:<Layout/>,children:[
-    {index:true,element:<Dashboard/>},
-    {path:"admins",element:<Admins/>},
-    {path:"finance",element:<Finance/>},
-    {path:"reservation",element:<Reservation/>},
-    {path:"services",element:<Services/>},
-    {path:"settings",element:<Settings/>},
-    {path:"users",element:<Users/>},
-    {path:"notification",element:<Notification/>},
-  ]},
-  { path: "login", element: <Login /> },
-  { path: "*", element: <NotFound/> }
+  path: "", element: <Layout />, children: [
+    { index: true, element: <Dashboard /> },
+    { path: "admins", element: <Admins /> },
+    { path: "finance", element: <Finance /> },
+    { path: "reservation", element: <Reservation /> },
+    { path: "services", element: <Services /> },
+    { path: "settings", element: <Settings /> },
+    { path: "users", element: <Users /> },
+    { path: "notification", element: <Notification /> },
+  ]
+},
+{ path: "login", element: <Login /> },
+{ path: "*", element: <NotFound /> }
 ])
 
 
+
 const App = () => {
+  const selectedService = useState("Hotels"); 
   return (
-      <RouterProvider router={routers}/>
+    <SelectedServiceContext.Provider value={selectedService}>
+      <RouterProvider router={routers} />
+    </SelectedServiceContext.Provider>
   );
 }
 
