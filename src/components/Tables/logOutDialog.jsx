@@ -6,33 +6,38 @@ import {
     DialogHeader,
     DialogBody,
     DialogFooter,
-    IconButton,
+    ListItem,
+    ListItemPrefix,
 } from "@material-tailwind/react";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { PowerIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
-export function DeleteDialog({onDelete}) {
-
-
+export function LogOutDialog() {
+    let navigate = useNavigate();
+    const logOut = () => {
+        localStorage.removeItem("userToken");
+        navigate("/login")
+        handleOpen()
+    }
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(!open);
 
-    const deleteItem = () => {
-        handleOpen(); 
-        onDelete(); 
-    }
 
     return (
         <>
 
-            <IconButton onClick={handleOpen} variant="text">
-                <TrashIcon className="h-4 w-4" />
-            </IconButton>
+            <ListItem onClick={handleOpen} >
+                <ListItemPrefix>
+                    <PowerIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                Log Out
+            </ListItem>
 
             <Dialog open={open} handler={handleOpen}>
-                <DialogHeader>Delete User</DialogHeader>
+                <DialogHeader>Log Out</DialogHeader>
                 <DialogBody>
-                    Are You sure to delete the user?
+                    Are You sure You want to logout?
                 </DialogBody>
                 <DialogFooter>
                     <Button
@@ -43,8 +48,8 @@ export function DeleteDialog({onDelete}) {
                     >
                         <span>Cancel</span>
                     </Button>
-                    <Button variant="gradient" color="red" onClick={deleteItem} >
-                        <span>Confirm</span>
+                    <Button variant="gradient" color="red" onClick={logOut} >
+                        <span>Yes</span>
                     </Button>
                 </DialogFooter>
             </Dialog>

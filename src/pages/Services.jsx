@@ -1,6 +1,6 @@
 // import { Table } from "../components/Table";
 import {  useState } from "react";
-import { ServicesTable } from "../components/ServicesTable";
+import { ServicesTable } from "../components/Tables/ServicesTable";
 import { ServicesTab } from "../components/ServicesTabs";
 // import { SelectedServiceContext } from "../contexts/ServicesContext";
 

@@ -1,47 +1,62 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-// import { PencilIcon } from "@heroicons/react/24/solid";
-import {
-    // ArrowDownTrayIcon,
-    // TrashIcon,
-    // PlusIcon
-} from "@heroicons/react/24/outline";
 import {
     Card,
     CardHeader,
     Typography,
-    // Button,
     CardBody,
     Chip,
     CardFooter,
-    Avatar,
-    // IconButton,
     Tooltip,
+    Button,
 } from "@material-tailwind/react";
-import { SimplePagination } from "./Pagination";
-import { NewButtonDialog } from "./NewButtonDialog";
-import { DeleteDialog } from "./DeleteDialog";
-import NewUserForm from "./NewUserForm";
+import { SimplePagination } from "../Pagination";
+import { DeleteDialog } from "../DeleteDialog";
+import { SelectedServiceContext } from "../../contexts/ServicesContext";
+import { useContext } from "react";
+import NewHotelForm from "../Forms/NewHotelForm";
+import NewRoomForm from "../Forms/NewRoomForm";
+import NewFlightForm from "../Forms/NewFlightForm";
+import NewSafariForm from "../Forms/NewSafariForm";
+import NewCruiseForm from "../Forms/NewCruiseForm";
+import NewTransportationForm from "../Forms/NewTransportationFrom";
+import NewStandardPackageForm from "../Forms/NewStandardPackageForm";
+import NewCustomPackageForm from "../Forms/NewCustomPackageForm";
+import { Link } from "react-router-dom";
+
+const serviceForms = {
+    Hotels: NewHotelForm,
+    Rooms: NewRoomForm,
+    Flights: NewFlightForm,
+    Safari: NewSafariForm,
+    Cruises: NewCruiseForm,
+    Transportation: NewTransportationForm,
+    'Standard Package': NewStandardPackageForm,
+    'Custom Package': NewCustomPackageForm,
+};
 
 
-
-export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber }) {
+export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber }) {
     // console.log(TABLE_ROWS);
+    // const [selectedService,] = useContext(SelectedServiceContext)
+    // const FormComponent = serviceForms[selectedService];
+
     return (
-        <Card className="h-full w-full">
+        <Card className="h-100 w-full rounded-xl shadow-none	">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <div>
                         <Typography component={'span'} variant="h5" color="blue-gray">
-                            Current users
+                            Recent Transactions
                         </Typography>
                         <Typography component={'span'} color="gray" className="mt-1 font-normal">
-                            These are details about the current users
+                            These are details about the last transactions
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
-                        <NewButtonDialog status={"add"} text={"New User"} type={"New user"}>
-                            <NewUserForm />
-                        </NewButtonDialog>
+                        {/* <NewButtonDialog status={"add"} text={`New ${selectedService}`} type={`New ${selectedService}`}>
+                            {FormComponent && <FormComponent />}
+                        </NewButtonDialog> */}
                     </div>
                 </div>
             </CardHeader>
@@ -70,18 +85,19 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                         {TABLE_ROWS.map(
                             (
                                 {
-                                    img,
-                                    name,
-                                    status,
+                                    Service_Name,
+                                    Quantity,
+                                    Reserved,
+                                    status
                                 },
                                 index,
                             ) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
-                                    ? "p-1 pt-2"
-                                    : "p-1 pt-2 border-b border-blue-gray-50";
+                                    ? "p-1"
+                                    : "p-1 border-b border-blue-gray-50";
                                 return (
-                                    <tr key={name}>
+                                    <tr key={Service_Name}>
                                         <td className={classes}>
                                             <Typography
                                                 component={'span'}
@@ -102,45 +118,39 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                                                 className="font-normal"
                                             >
                                                 <div className="pl-3">
-                                                    {name}
+                                                    {Service_Name}
                                                 </div>
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <div className="flex items-center gap-3">
-                                                <Avatar
-                                                    src={img}
-                                                    alt={name}
-                                                    size="md"
-                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                                />
+                                            <div className="">
                                                 <Typography
                                                     component={'span'}
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    <div className="flex flex-col" >
-                                                        <p>Mohamed</p>
-                                                        <p>mohamed@gamil.com</p>
+                                                    <div className="pl-5">
+
+                                                        {Quantity}
                                                     </div>
                                                 </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <div className="w-max">
-                                                +201281982770
+                                            <div className="pl-7">
+                                                {Reserved}
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center">
                                                 <div className="w-max">
                                                     <Chip
                                                         size="sm"
                                                         variant="ghost"
                                                         value={status}
                                                         color={
-                                                            status === "Active"
+                                                            status === "Available"
                                                                 ? "green"
                                                                 : "red"
                                                         }
@@ -150,13 +160,19 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                <NewButtonDialog status={"edit"} text={"Edit User"}  type={"Edit user"}>
-                                                    <NewUserForm />
-                                                </NewButtonDialog>
+                                                {/* <NewButtonDialog status={"edit"} text={`New ${selectedService}`} type={`Edit ${selectedService}`}>{FormComponent && <FormComponent />}
+                                                </NewButtonDialog> */}
+                                                <h1></h1>
                                             </Tooltip>
                                             <Tooltip content="Delete User">
                                                 <DeleteDialog />
                                             </Tooltip>
+                                        </td>
+                                        <td className={classes}>
+                                            <Link to={"/details"}>
+                                                <Button className="bg-[#616CA8] rounded-2xl normal-case p-3 py-2"
+                                                >View</Button>
+                                            </Link>
                                         </td>
                                     </tr>
                                 );
@@ -165,7 +181,7 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4 pb-0">
                 <SimplePagination NumberOfPages={NumberOfPages} paginate={paginate} />
             </CardFooter>
         </Card>

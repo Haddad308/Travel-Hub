@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Avatar } from "@material-tailwind/react";
 
-export function AvatarWithText(props) {
+export function AvatarWithText({img,size,children}) {
     return (
         <div className="flex flex-col gap-6  ">
             <div className="flex items-center gap-4">
-                <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" size={props.size} />
+                <Avatar src={img} alt="avatar" size={size} />
                 <div className="text-left" >
-                    {props.children}
+                    {children}
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@material-tailwind/react";
-import { AvatarWithText } from "../components/avatar";
+import { AvatarWithText } from "./avatar";
 import { ClockIcon } from "@heroicons/react/24/outline";
 
 export default function ReservationCard({ AgencyName, AgencyEmail, AgencyContact, status, info1, info2, info3 }) {
@@ -8,11 +8,11 @@ export default function ReservationCard({ AgencyName, AgencyEmail, AgencyContact
         <div className=" flex flex-col mb-4 rounded-3xl border-grey border-2 " >
             <div className=" flex justify-between p-3">
                 {status === "Pending" ? <p className="flex items-center justify-between text-yellow-700" ><ClockIcon className="w-4 h-4" /> &nbsp;Pending</p>
-                    : status === "Cancelled" ? <p className="flex items-center justify-between text-red-500" ><ClockIcon className="w-4 h-4" /> &nbsp;Cancelled</p> : <p className="flex items-center justify-between text-green-500" ><ClockIcon className="w-4 h-4" /> &nbsp;Reserved</p> }
+                    : status === "Cancelled" ? <p className="flex items-center justify-between text-red-500" ><ClockIcon className="w-4 h-4" /> &nbsp;Cancelled</p> : <p className="flex items-center justify-between text-green-500" ><ClockIcon className="w-4 h-4" /> &nbsp;Reserved</p>}
                 <p>13/1/2024</p>
             </div>
             <div className=" flex justify-between items-center px-6 " >
-                <AvatarWithText size={"lg"} >
+                <AvatarWithText size={"lg"} img={"https://docs.material-tailwind.com/img/face-2.jpg"} >
                     <h1 className="font-bold mb-1"  >
                         {AgencyName}
                     </h1>

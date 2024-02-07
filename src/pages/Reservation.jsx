@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { TabsComponent } from "../components/Tabs";
-import ReservationCard from "./ReservationCard";
+import ReservationCard from "../components/ReservationCard";
 
 export default function Reservation() {
 
     const reservations = [
         {
-            "AgencyImg":"",
-            "AgencyName":"Triage1",
-            "AgencyEmail":"Agency@gmail.com",
-            "AgencyContact":"+201281982770",
-            "status":"Reserved",
-            "info1":"Hotel",
-            "info2":"4 Rooms in Hilton Hotel",
-            "info3":"2 Nights"
+            "AgencyImg": "",
+            "AgencyName": "Triage1",
+            "AgencyEmail": "Agency@gmail.com",
+            "AgencyContact": "+201281982770",
+            "status": "Reserved",
+            "info1": "Hotel",
+            "info2": "4 Rooms in Hilton Hotel",
+            "info3": "2 Nights"
         },
         {
             "AgencyName": "Triage2",
@@ -89,9 +89,9 @@ export default function Reservation() {
             value: "cancelled",
         }
     ];
-    
-    const [filtered,setFiltered] = useState([]);
-    const filterReservation = useCallback ((reservationStatus) => {
+
+    const [filtered, setFiltered] = useState([]);
+    const filterReservation = useCallback((reservationStatus) => {
         if (reservationStatus === "All") {
             setFiltered(reservations);
         } else {
@@ -100,17 +100,17 @@ export default function Reservation() {
         }
     }, [reservations]);
 
-    useEffect(()=>{
+    useEffect(() => {
         filterReservation("All");
-    },[])
+    }, [])
 
     return (
         <div className="p-6">
             <TabsComponent filter={filterReservation} TABS={TABS} search={false}>
                 <div className="grid grid-cols-2 gap-3 px-5" >
-                    {filtered?.map(({ AgencyName, AgencyEmail, AgencyContact, status, info1, info2, info3 },index)=>{
+                    {filtered?.map(({ AgencyName, AgencyEmail, AgencyContact, status, info1, info2, info3 }, index) => {
                         return <ReservationCard key={index} AgencyContact={AgencyContact} AgencyName={AgencyName} AgencyEmail={AgencyEmail}
-                            info1={info1} info2={info2} info3={info3} status={status}/>
+                            info1={info1} info2={info2} info3={info3} status={status} />
                     })}
                 </div>
             </TabsComponent>

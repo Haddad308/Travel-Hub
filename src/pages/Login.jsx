@@ -1,34 +1,72 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup'; // For validation. 
 import Alert from '../components/Alert';
 import ButtonLoader from '../components/ButtonLoader';
-
+import { tokenContext } from '../contexts/AuthContext';
 
 export default function Login() {
 
+    const  [,SetToken] = useContext(tokenContext);
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState("");
     let navigate = useNavigate()
 
     async function signIn(values) {
-
-        setIsLoading(true)
+        setIsLoading(true);
         setApiError("");
 
-        let data  = await axios.post("http://localhost:3000/api/v1/auth/email/login", values).catch((error) => {
-            console.log(error.message);
-            setApiError(error.message);
-            setIsLoading(false);
-        });
-        
-        if (data?.status === 200) {
-            setIsLoading(false)
-            navigate("/");
+        try {
+            const response = await axios.post("http://localhost:3000/api/v1/auth/email/login", values);
+
+            if (response.status === 200) {
+                const { token, refreshToken } = response.data;
+                setIsLoading(false);
+                navigate("/");
+                console.log(token);
+                SetToken(token);
+                localStorage.setItem("userToken", token);
+                localStorage.setItem("refreshToken", refreshToken);
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                // If login fails due to expired access token, attempt to refresh the token
+                const refreshToken = localStorage.getItem("refreshToken");
+
+                if (refreshToken) {
+                    try {
+                        const refreshResponse = await axios.post("http://localhost:3000/api/v1/auth/refresh", {
+                            refreshToken
+                        });
+
+                        if (refreshResponse.status === 200) {
+                            const { token } = refreshResponse.data;
+                            setIsLoading(false);
+                            navigate("/");
+                            console.log(token);
+                            SetToken(token);
+                            localStorage.setItem("userToken", token);
+                        }
+                    } catch (refreshError) {
+                        console.error("Failed to refresh token:", refreshError);
+                        setApiError("Failed to refresh token");
+                        setIsLoading(false);
+                    }
+                } else {
+                    console.error("Refresh token not available");
+                    setApiError("Refresh token not available");
+                    setIsLoading(false);
+                }
+            } else {
+                console.error("Login error:", error);
+                setApiError(error.message || "Login failed");
+                setIsLoading(false);
+            }
         }
     }
+
 
     const formHandler = useFormik({
         initialValues: {
@@ -78,18 +116,18 @@ export default function Login() {
                                 <div className='text-red-600'>{formHandler.errors.password}</div>
                             ) : null}
                         </div>
-                        {apiError ? <Alert/> : ""}
+                        {apiError ? <Alert text={"Wrong Email or Password."} /> : ""}
                     </div>
                     {/* Submit button */}
                     <div>
                         {isLoading ? <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            <ButtonLoader/>
+                            <ButtonLoader />
                         </button> : <button
                             type="submit"
                             disabled={!(formHandler.isValid && formHandler.dirty)}
                             className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${!(formHandler.isValid && formHandler.dirty)
-                                    ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-                                    : 'bg-indigo-600 text-white hover:bg-indigo-500'
+                                ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
+                                : 'bg-indigo-600 text-white hover:bg-indigo-500'
                                 }`}
                         >
                             Sign in

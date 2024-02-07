@@ -10,9 +10,8 @@ import {
 import {
     PresentationChartBarIcon,
     Cog6ToothIcon,
-    UserPlusIcon,
+    // UserPlusIcon,
     // InboxIcon,
-    PowerIcon,
     MapIcon,
     UsersIcon,
     CalendarIcon,
@@ -20,10 +19,15 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { WrenchIcon } from "@heroicons/react/24/outline";
+import { LogOutDialog } from "./Tables/logOutDialog";
 
 
 
 export function Sidebar() {
+
+    
+
+    
     return (
         <>
             <div className="top-0 bottom-0 lg:left-0 fixed  overflow-y-auto w-[250px] bg-[#415A77] text-white" >
@@ -83,14 +87,14 @@ export function Sidebar() {
                             Finance
                         </ListItem>
                     </Link>
-                    <Link to={ "/Admins"}>
+                    {/* <Link to={ "/Admins"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <UserPlusIcon className="h-5 w-5" />
                             </ListItemPrefix>
                             Admins
                         </ListItem>
-                    </Link>
+                    </Link> */}
                     <Link to={ "/Settings"}>
                         <ListItem>
                             <ListItemPrefix>
@@ -99,15 +103,11 @@ export function Sidebar() {
                             Setting
                         </ListItem>
                     </Link>
-                    <ListItem  >
-                        <ListItemPrefix>
-                            <PowerIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Log Out
-                    </ListItem>
+                    <LogOutDialog></LogOutDialog>
+                    
                 </List>
                 <footer className="absolute w-full  bottom-0 p-3" >
-                    <AvatarWithText size={"md"}>
+                    <AvatarWithText size={"md"} img={"https://docs.material-tailwind.com/img/face-2.jpg"}>
                         <Typography color="white" variant='small' >
                             Lania Andrew
                         </Typography>

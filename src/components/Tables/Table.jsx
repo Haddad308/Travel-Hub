@@ -1,61 +1,56 @@
 /* eslint-disable react/prop-types */
+import axios from "axios";
 import {
     Card,
     CardHeader,
     Typography,
     CardBody,
-    Chip,
     CardFooter,
     Tooltip,
-    Button,
+    Avatar,
 } from "@material-tailwind/react";
-import { SimplePagination } from "./Pagination";
-import { NewButtonDialog } from "./NewButtonDialog";
-import { DeleteDialog } from "./DeleteDialog";
-import { SelectedServiceContext } from "../contexts/ServicesContext";
+import { SimplePagination } from "../Pagination";
+import { DeleteDialog } from "../DeleteDialog";
 import { useContext } from "react";
-import NewHotelForm from "./NewHotelForm";
-import NewRoomForm from "./NewRoomForm";
-import NewFlightForm from "./NewFlightForm";
-import NewSafariForm from "./NewSafariForm";
-import NewCruiseForm from "./NewCruiseForm";
-import NewTransportationForm from "./NewTransportationFrom";
-import NewStandardPackageForm from "./NewStandardPackageForm";
-import NewCustomPackageForm from "./NewCustomPackageForm";
-
-const serviceForms = {
-    Hotels: NewHotelForm,
-    Rooms: NewRoomForm,
-    Flights: NewFlightForm,
-    Safari: NewSafariForm,
-    Cruises: NewCruiseForm,
-    Transportation: NewTransportationForm,
-    'Standard Package': NewStandardPackageForm,
-    'Custom Package': NewCustomPackageForm,
-};
+import { tokenContext } from "../../contexts/AuthContext";
+import NewUserForm from "../Forms/NewUserForm"
 
 
-export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber }) {
-    // console.log(TABLE_ROWS);
-    const [selectedService,] = useContext(SelectedServiceContext)
-    const FormComponent = serviceForms[selectedService];
+export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getUsers }) {
+
+    const [token,] = useContext(tokenContext);
+
+    async function DeleteItem(id) {
+        console.log("hi");
+        let data = await axios.delete(`http://localhost:3000/api/v1/users/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        ).catch((error) => {
+            console.log(error.message);
+        });
+
+        if (data?.status === 200) {
+            console.log(data);
+        }
+        getUsers(token);
+    }
 
     return (
-        <Card className="h-100 w-full rounded-none shadow-none	">
+        <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <div>
                         <Typography component={'span'} variant="h5" color="blue-gray">
-                            Recent Transactions
+                            Current users
                         </Typography>
                         <Typography component={'span'} color="gray" className="mt-1 font-normal">
-                            These are details about the last transactions
+                            These are details about the current users
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
-                        <NewButtonDialog status={"add"} text={`New ${selectedService}`} type={`New ${selectedService}`}>
-                            {FormComponent && <FormComponent />}
-                        </NewButtonDialog>
+                        <NewUserForm status={"add"} text={"New User"} type={"New user"} getUsers={getUsers} />
                     </div>
                 </div>
             </CardHeader>
@@ -84,19 +79,20 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                         {TABLE_ROWS.map(
                             (
                                 {
-                                    Service_Name,
-                                    Quantity,
-                                    Reserved,
-                                    status
+                                    id,
+                                    email,
+                                    firstName,
+                                    lastName,
+                                    profilePhoto
                                 },
                                 index,
                             ) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
-                                    ? "p-1"
-                                    : "p-1 border-b border-blue-gray-50";
+                                    ? "p-1 pt-2"
+                                    : "p-1 pt-2 border-b border-blue-gray-50";
                                 return (
-                                    <tr key={Service_Name}>
+                                    <tr key={id}>
                                         <td className={classes}>
                                             <Typography
                                                 component={'span'}
@@ -117,58 +113,44 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                                                 className="font-normal"
                                             >
                                                 <div className="pl-3">
-                                                    {Service_Name}
+                                                    {"Agency" + index}
                                                 </div>
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <div className="">
+                                            <div className="flex items-center gap-3">
+                                                {profilePhoto?.imageUrl? <Avatar
+                                                    src={profilePhoto.imageUrl}
+                                                    size="md"
+                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+                                                /> : <Avatar
+                                                    src="https://cdn.pixabay.com/photo/2012/04/26/19/43/profile-42914_640.png"
+                                                    size="md"
+                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+                                                />}
+                                                
                                                 <Typography
                                                     component={'span'}
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    <div className="pl-5">
-
-                                                        {Quantity}
+                                                    <div className="flex flex-col" >
+                                                        <p>{firstName + " " + lastName}</p>
+                                                        <p>{email}</p>
                                                     </div>
                                                 </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <div className="pl-7">
-                                                {Reserved}
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="flex items-center">
-                                                <div className="w-max">
-                                                    <Chip
-                                                        size="sm"
-                                                        variant="ghost"
-                                                        value={status}
-                                                        color={
-                                                            status === "Available"
-                                                                ? "green"
-                                                                : "red"
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                <NewButtonDialog status={"edit"} text={`New ${selectedService}`} type={`Edit ${selectedService}`}>{FormComponent && <FormComponent />}
-                                                </NewButtonDialog>
+                                                <NewUserForm status={"edit"} text={"Edit User"} type={"Edit user"} getUsers={getUsers} UserId={id} />
                                             </Tooltip>
                                             <Tooltip content="Delete User">
-                                                <DeleteDialog />
+                                                <DeleteDialog onDelete={() => {
+                                                    DeleteItem(id)
+                                                }} />
                                             </Tooltip>
-                                        </td>
-                                        <td className={classes}>
-                                            <Button className="bg-[#616CA8] rounded-2xl normal-case p-3 py-2"
-                                            >View</Button>
                                         </td>
                                     </tr>
                                 );
@@ -177,7 +159,7 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                     </tbody>
                 </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4 pb-0">
+            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
                 <SimplePagination NumberOfPages={NumberOfPages} paginate={paginate} />
             </CardFooter>
         </Card>
