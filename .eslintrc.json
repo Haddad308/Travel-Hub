@@ -20,7 +20,7 @@
         "import"
     ],
     "rules": {
-        "react/prop-types": 0
+        "react/prop-types": false
     },
     "settings": {
         "react": {

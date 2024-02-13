@@ -1,20 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import { Table } from "../components/Table";
-import {  useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ServicesTable } from "../components/Tables/ServicesTable";
 import { ServicesTab } from "../components/ServicesTabs";
-// import { SelectedServiceContext } from "../contexts/ServicesContext";
+import { SelectedServiceContext } from "../contexts/ServicesContext";
+import axios from "axios";
+import { tokenContext } from "../contexts/AuthContext";
+
+
 
 const TABS = [
-    // {
-    //     label: "All",
-    //     value: "all",
-    // },
     {
         label: "Hotels",
         value: "hotels",
     },
     {
-        label: "Rooms",
+        label: "hotel-Rooms",
         value: "rooms",
     },
     {
@@ -30,60 +31,81 @@ const TABS = [
         value: "cruises",
     },
     {
-        label: "Transportation",
+        label: "transportations",
         value: "transportation",
     },
     {
-        label: "Standard Package",
+        label: "standard-packages",
         value: "StandardPackage",
     },
     {
-        label: "Custom Package",
+        label: "Packages",
         value: "CustomPackage",
     }
 ];
 
-const heads = ["No", "Service Name", "Quantity", "Reserved", "Status", "Actions",""];
+const defaultHeads = ["No", "name", "address", "state", "website", "Actions", ""];
+const hotelHeads = ["No", "name", "type", "description", "price", "quantityAvailable", "Actions", ""];
 
-const hotels = [
-    { "Service_Name": "Single Room", "Quantity": 5, "Reserved": 2, "status": "Available" },
-    { "Service_Name": "Double Room", "Quantity": 8, "Reserved": 3, "status": "Available" },
-    { "Service_Name": "Suite", "Quantity": 3, "Reserved": 1, "status": "Unavailable" },
-    { "Service_Name": "Conference Room", "Quantity": 2, "Reserved": 0, "status": "Available" },
-    { "Service_Name": "Poolside Cabana", "Quantity": 10, "Reserved": 5, "status": "Available" },
-    { "Service_Name": "Gym Access", "Quantity": 15, "Reserved": 7, "status": "Available" },
-    { "Service_Name": "Spa Treatment", "Quantity": 4, "Reserved": 2, "status": "Available" },
-    { "Service_Name": "Airport Shuttle", "Quantity": 3, "Reserved": 1, "status": "Available" },
-    { "Service_Name": "Breakfast Buffet", "Quantity": 20, "Reserved": 10, "status": "Available" },
-    { "Service_Name": "WiFi Access", "Quantity": 50, "Reserved": 15, "status": "Available" }
-];
+
 
 
 export default function Services() {
 
-    const [pageNumber, setPageNumber] = useState(1);
-    const paginate = (pageNumber) => {
-        setPageNumber(pageNumber);
+    const getHeads = (service) => {
+        return service === "Hotels" ? hotelHeads : defaultHeads;
     };
+    
+    
+    
+    const [services, setServices] = useState([]);
+    const [token,] = useContext(tokenContext);
+    const [pageNumber, setPageNumber] = useState(1);
     const rowsPerPage = 5;
     const indexFirstItem = (pageNumber - 1) * rowsPerPage;
     const indexLastItem = pageNumber * rowsPerPage;
-    const rowData = hotels.slice(indexFirstItem, indexLastItem);
-    const NumberOfPages = Math.ceil(hotels.length / rowsPerPage);
+    const rowData = services.slice(indexFirstItem, indexLastItem);
+    const NumberOfPages = Math.ceil(services.length / rowsPerPage);
+    const [selectedService,] = useContext(SelectedServiceContext)
 
-    function test(){
-        console.log("hello from services");
+    const paginate = (pageNumber) => {
+        setPageNumber(pageNumber);
+    };
+
+    async function getService(service, token) {
+        setServices([]);
+        let data = await axios.get(`http://localhost:3000/api/v1/${service}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
+
+        if (data?.status === 200) {
+            console.log(data.data);
+            setServices(data.data)
+        }
     }
 
+    useEffect(() => {
+        getService(selectedService,token)
+    }, [selectedService,token])
+
+    const heads = getHeads(selectedService);
+
+    console.log(rowData);
     return (
         <div className="p-6">
-            <ServicesTab filter={test} TABS={TABS} search={false}  >
+            <ServicesTab TABS={TABS} search={false}  >
                 <ServicesTable
                     TABLE_HEAD={heads}
                     TABLE_ROWS={rowData}
                     NumberOfPages={NumberOfPages}
                     pageNumber={pageNumber}
                     paginate={paginate}
+                    getService={getService}
                 />
             </ServicesTab>
         </div>

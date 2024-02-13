@@ -19,12 +19,13 @@ import { tokenContext } from "../../contexts/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import ButtonLoader from "../ButtonLoader";
 import Alert from "../Alert";
+import { SelectedServiceContext } from "../../contexts/ServicesContext";
 
 
-export default function NewUserForm({ text, status, type, getUsers, UserId }) {
+export default function NewServiceForm({ text, status, type, getUsers, UserId }) {
 
+    const [selectedService,] = useContext(SelectedServiceContext)
     const [token,] = useContext(tokenContext);
-
     const [size, setSize] = useState(null);
     const [file, setFile] = useState(null);
     const [image,] = useState(null);
@@ -42,7 +43,7 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
         if (image) return; // If image is already uploaded, return
         try {
             setApiErrorImg(""); // Clear any previous image upload error
-            
+
             const formData = new FormData();
             formData.append("files", fileItem);
             console.log("check formData", formData);
@@ -53,13 +54,13 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                 },
             });
 
-            console.log("most important",result);
+            console.log("most important", result);
             const uploadedImageId = result.data[0].id; // Extract image ID from the result
-            console.log("test Upload image 1100",uploadedImageId);
+            console.log("test Upload image 1100", uploadedImageId);
             return uploadedImageId;
         } catch (error) {
             console.error("Error uploading image:", error);
-            if(status==="edit")
+            if (status === "edit")
                 return;
             setApiErrorImg("Error uploading image. Please try again later.");
             throw error; // Re-throw the error to propagate it to the calling code
@@ -67,7 +68,6 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
             setIsLoading(false); // Set loading state to false regardless of success or failure
         }
     }
-
 
     async function addUser(values) {
         // Set loading state to true
@@ -132,6 +132,7 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
         }
     }
 
+
     function removeEmptyValues(obj) {
         const newObj = {};
         for (const key in obj) {
@@ -187,7 +188,7 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                             handleOpen();
                         })
                     } else {
-                        values = removeEmptyValues(values); 
+                        values = removeEmptyValues(values);
                         editUser(values, UserId).then(() => {
                             notify();
                             handleOpen();
@@ -314,7 +315,6 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                                 </div>
                                 <div className="me-20" >
                                     {(apiError || apiErrorImg) ? <Alert text={apiError + apiErrorImg} /> : ""}
-
                                 </div>
                             </div>
                             {/* Image Upload */}
@@ -360,8 +360,8 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                                     <ButtonLoader />
                                 </Button> : <Button
                                     type="submit"
-                                        disabled={!(formHandler.isValid && formHandler.dirty) && status == "add"}
-                                        className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#616CA8] ${!(formHandler.isValid && formHandler.dirty) && status == "add"
+                                    disabled={!(formHandler.isValid && formHandler.dirty) && status == "add"}
+                                    className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#616CA8] ${!(formHandler.isValid && formHandler.dirty) && status == "add"
                                         ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
                                         : 'bg-[#616CA8] text-white hover:bg-[#616CA8]'
                                         }`}

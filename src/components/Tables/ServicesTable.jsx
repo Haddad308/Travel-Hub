@@ -1,45 +1,52 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import {
     Card,
     CardHeader,
     Typography,
     CardBody,
-    Chip,
     CardFooter,
     Tooltip,
     Button,
 } from "@material-tailwind/react";
 import { SimplePagination } from "../Pagination";
 import { DeleteDialog } from "../DeleteDialog";
-import { SelectedServiceContext } from "../../contexts/ServicesContext";
-import { useContext } from "react";
-import NewHotelForm from "../Forms/NewHotelForm";
-import NewRoomForm from "../Forms/NewRoomForm";
-import NewFlightForm from "../Forms/NewFlightForm";
-import NewSafariForm from "../Forms/NewSafariForm";
-import NewCruiseForm from "../Forms/NewCruiseForm";
-import NewTransportationForm from "../Forms/NewTransportationFrom";
-import NewStandardPackageForm from "../Forms/NewStandardPackageForm";
-import NewCustomPackageForm from "../Forms/NewCustomPackageForm";
 import { Link } from "react-router-dom";
-
-const serviceForms = {
-    Hotels: NewHotelForm,
-    Rooms: NewRoomForm,
-    Flights: NewFlightForm,
-    Safari: NewSafariForm,
-    Cruises: NewCruiseForm,
-    Transportation: NewTransportationForm,
-    'Standard Package': NewStandardPackageForm,
-    'Custom Package': NewCustomPackageForm,
-};
+import { useContext, useEffect, useState } from "react";
+import { tokenContext } from "../../contexts/AuthContext";
+import { SelectedServiceContext } from "../../contexts/ServicesContext";
+import axios from "axios";
+import AddButton from "../Add/AddButton";
 
 
-export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber }) {
-    // console.log(TABLE_ROWS);
-    // const [selectedService,] = useContext(SelectedServiceContext)
-    // const FormComponent = serviceForms[selectedService];
+export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getService }) {
+
+    const [tableRows, setTableRows] =useState(TABLE_ROWS);
+    const [token,] = useContext(tokenContext);
+    const [selectedService,] = useContext(SelectedServiceContext)
+
+    async function DeleteService(id,service) {
+        console.log("hi fo");
+        let data = await axios.delete(`http://localhost:3000/api/v1/${service}/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        ).catch((error) => {
+            console.log(error.message);
+        });
+
+        if (data?.status === 200) {
+            console.log(data);
+        }
+        getService(service,token);
+    }
+
+    useEffect(() => {
+        setTableRows(TABLE_ROWS); // Update the table rows when TABLE_ROWS prop changes
+    }, [TABLE_ROWS]);
+
+    const hotels = TABLE_HEAD.length === 8 ? true : false;
+    console.log(TABLE_ROWS);
 
     return (
         <Card className="h-100 w-full rounded-xl shadow-none	">
@@ -54,9 +61,8 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
-                        {/* <NewButtonDialog status={"add"} text={`New ${selectedService}`} type={`New ${selectedService}`}>
-                            {FormComponent && <FormComponent />}
-                        </NewButtonDialog> */}
+                        <AddButton buttonText={`New ${selectedService}`} dialogTitle={`New ${selectedService}`} addedItem={"hotels"} />
+                        {/* <NewServiceForm status={"add"} text={`New ${selectedService}`} /> */}
                     </div>
                 </div>
             </CardHeader>
@@ -82,101 +88,135 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(
-                            (
-                                {
-                                    Service_Name,
-                                    Quantity,
-                                    Reserved,
-                                    status
-                                },
-                                index,
-                            ) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
-                                const classes = isLast
-                                    ? "p-1"
-                                    : "p-1 border-b border-blue-gray-50";
+                        {hotels ? (
+                            tableRows.map(({ id,name, type, description, price, quantityAvailable }, index) => {
+                                const isLast = index === tableRows.length - 1;
+                                const classes = isLast ? "p-1" : "p-1 border-b border-blue-gray-50";
                                 return (
-                                    <tr key={Service_Name}>
+                                    <tr key={index}>
                                         <td className={classes}>
-                                            <Typography
-                                                component={'span'}
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                <div className="pl-4" >
+                                            <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
+                                                <div className="pl-4">
                                                     {(index + 1) + (pageNumber - 1) * 5}
                                                 </div>
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography
-                                                component={'span'}
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
+                                            <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
                                                 <div className="pl-3">
-                                                    {Service_Name}
+                                                    {name}
+                                                </div>
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
+                                                <div className="pl-3">
+                                                    {type}
                                                 </div>
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <div className="">
-                                                <Typography
-                                                    component={'span'}
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
+                                                <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
                                                     <div className="pl-5">
-
-                                                        {Quantity}
+                                                        {description}
                                                     </div>
                                                 </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="pl-7">
-                                                {Reserved}
+                                                {price}
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <div className="flex items-center">
-                                                <div className="w-max">
-                                                    <Chip
-                                                        size="sm"
-                                                        variant="ghost"
-                                                        value={status}
-                                                        color={
-                                                            status === "Available"
-                                                                ? "green"
-                                                                : "red"
-                                                        }
-                                                    />
+                                            <div className="pl-7">
+                                                {quantityAvailable}
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <Tooltip content="Edit Hotel">
+                                                {/* <NewButtonDialog status={"edit"} text={`New ${selectedService}`} type={`Edit ${selectedService}`}>{FormComponent && <FormComponent />}
+                        </NewButtonDialog> */}
+                                                <h1></h1>
+                                            </Tooltip>
+                                            <Tooltip content="Delete Hotel">
+                                                <DeleteDialog onDelete={() => {
+                                                    DeleteService(id,selectedService)
+                                                }} />
+                                            </Tooltip>
+                                        </td>
+                                        <td className={classes}>
+                                            <Link to={"/details"}>
+                                                <Button className="bg-[#616CA8] rounded-2xl normal-case p-3 py-2">
+                                                    View
+                                                </Button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        ) : (
+                                tableRows.map(({ id,name, address, state, website }, index) => {
+                                const isLast = index === TABLE_ROWS.length - 1;
+                                const classes = isLast ? "p-1" : "p-1 border-b border-blue-gray-50";
+                                return (
+                                    <tr key={name}>
+                                        <td className={classes}>
+                                            <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
+                                                <div className="pl-4">
+                                                    {(index + 1) + (pageNumber - 1) * 5}
                                                 </div>
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
+                                                <div className="pl-3">
+                                                    {name}
+                                                </div>
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="">
+                                                <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
+                                                    <div className="pl-5">
+                                                        {address}
+                                                    </div>
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="pl-7">
+                                                {state}
+                                            </div>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="pl-7">
+                                                {website}
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
                                                 {/* <NewButtonDialog status={"edit"} text={`New ${selectedService}`} type={`Edit ${selectedService}`}>{FormComponent && <FormComponent />}
-                                                </NewButtonDialog> */}
+                        </NewButtonDialog> */}
                                                 <h1></h1>
                                             </Tooltip>
                                             <Tooltip content="Delete User">
-                                                <DeleteDialog />
+                                                <DeleteDialog onDelete={() => {
+                                                    DeleteService(id, selectedService)
+                                                }} />
                                             </Tooltip>
                                         </td>
                                         <td className={classes}>
                                             <Link to={"/details"}>
-                                                <Button className="bg-[#616CA8] rounded-2xl normal-case p-3 py-2"
-                                                >View</Button>
+                                                <Button className="bg-[#616CA8] rounded-2xl normal-case p-3 py-2">
+                                                    View
+                                                </Button>
                                             </Link>
                                         </td>
                                     </tr>
                                 );
-                            },
+                            })
                         )}
                     </tbody>
                 </table>

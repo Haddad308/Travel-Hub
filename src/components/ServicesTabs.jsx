@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { BuildingOffice2Icon, GlobeEuropeAfricaIcon, LifebuoyIcon, MagnifyingGlassIcon, MoonIcon, QueueListIcon, Square3Stack3DIcon, SunIcon, TicketIcon } from "@heroicons/react/24/outline";
 import {
@@ -40,13 +41,13 @@ export function ServicesTab({ TABS, filter, search, children }) {
                         <TabsHeader>
                             {TABS.map(({ label, value }) => (
                                 <Tab className="text-nowrap" key={value} value={value} onClick={() => {
-                                    filter(label);
+                                    // filter(label);
                                     SetSelectedService(label); 
                                 }} >
                                     <div className="flex justify-center items-center">
                                         {iconMap[value]}
                                         <p className="text-[#808080]">
-                                            {label}
+                                            {value}
                                         </p>
                                     </div>
                                 </Tab>

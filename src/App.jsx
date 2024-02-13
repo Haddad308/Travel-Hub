@@ -45,7 +45,7 @@ const App = () => {
     if (localStorage.getItem("userToken")) setToken(localStorage.getItem("userToken"));
   })
 
-  const selectedService = useState("Hotels");
+  const selectedService = useState("hotels");
   return (
     <SelectedServiceContext.Provider value={selectedService}>
       <RouterProvider router={routers} />

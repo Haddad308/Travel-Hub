@@ -76,6 +76,7 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                         </tr>
                     </thead>
                     <tbody>
+                        {}
                         {TABLE_ROWS.map(
                             (
                                 {
