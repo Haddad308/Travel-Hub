@@ -19,21 +19,18 @@ import { tokenContext } from "../../contexts/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import ButtonLoader from "../ButtonLoader";
 import Alert from "../Alert";
+import { RemoveEmptyValues } from "../../hooks/RemoveEmptyValues";
 
 
-export default function NewUserForm({ text, status, type, getUsers, UserId }) {
+export default function UserFormDialog({ text, status, type, getUsers, UserId }) {
 
     const [token,] = useContext(tokenContext);
-
     const [size, setSize] = useState(null);
     const [file, setFile] = useState(null);
     const [image,] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState("");
     const [apiErrorImg, setApiErrorImg] = useState("");
-
-
-
     const notify = () => toast.success('User Added Successfully.');
     const handleOpen = (value) => setSize(value);
 
@@ -42,7 +39,7 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
         if (image) return; // If image is already uploaded, return
         try {
             setApiErrorImg(""); // Clear any previous image upload error
-            
+
             const formData = new FormData();
             formData.append("files", fileItem);
             console.log("check formData", formData);
@@ -53,13 +50,13 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                 },
             });
 
-            console.log("most important",result);
+            console.log("most important", result);
             const uploadedImageId = result.data[0].id; // Extract image ID from the result
-            console.log("test Upload image 1100",uploadedImageId);
+            console.log("test Upload image 1100", uploadedImageId);
             return uploadedImageId;
         } catch (error) {
             console.error("Error uploading image:", error);
-            if(status==="edit")
+            if (status === "edit")
                 return;
             setApiErrorImg("Error uploading image. Please try again later.");
             throw error; // Re-throw the error to propagate it to the calling code
@@ -132,24 +129,7 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
         }
     }
 
-    function removeEmptyValues(obj) {
-        const newObj = {};
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                // Check if the value is not empty (undefined, null, empty string, empty array, empty object)
-                if (
-                    obj[key] !== undefined &&
-                    obj[key] !== null &&
-                    obj[key] !== "" &&
-                    !(Array.isArray(obj[key]) && obj[key].length === 0) &&
-                    !(typeof obj[key] === "object" && Object.keys(obj[key]).length === 0)
-                ) {
-                    newObj[key] = obj[key];
-                }
-            }
-        }
-        return newObj;
-    }
+
 
     const formHandler = useFormik({
         initialValues: {
@@ -187,7 +167,7 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                             handleOpen();
                         })
                     } else {
-                        values = removeEmptyValues(values); 
+                        values = RemoveEmptyValues(values);
                         editUser(values, UserId).then(() => {
                             notify();
                             handleOpen();
@@ -290,7 +270,6 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                                             <div className='text-red-600' >{formHandler.errors.email}</div>
                                         ) : null}
                                     </div> : ""}
-
                                     <div className="py-3" >
                                         <label htmlFor="password">Password</label>
                                         <Input
@@ -310,14 +289,13 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                                             <div className='text-red-600' >{formHandler.errors.password}</div>
                                         ) : null}
                                     </div>
-
                                 </div>
                                 <div className="me-20" >
                                     {(apiError || apiErrorImg) ? <Alert text={apiError + apiErrorImg} /> : ""}
-
                                 </div>
                             </div>
                             {/* Image Upload */}
+
                             <div className="w-full pt-5" >
                                 <div className="mt-2 flex justify-center items-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 h-80">
                                     {file ? <h1>File Uploaded</h1>
@@ -360,8 +338,8 @@ export default function NewUserForm({ text, status, type, getUsers, UserId }) {
                                     <ButtonLoader />
                                 </Button> : <Button
                                     type="submit"
-                                        disabled={!(formHandler.isValid && formHandler.dirty) && status == "add"}
-                                        className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#616CA8] ${!(formHandler.isValid && formHandler.dirty) && status == "add"
+                                    disabled={!(formHandler.isValid && formHandler.dirty) && status == "add"}
+                                    className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#616CA8] ${!(formHandler.isValid && formHandler.dirty) && status == "add"
                                         ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
                                         : 'bg-[#616CA8] text-white hover:bg-[#616CA8]'
                                         }`}

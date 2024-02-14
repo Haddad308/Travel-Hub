@@ -13,7 +13,7 @@ import { SimplePagination } from "../Pagination";
 import { DeleteDialog } from "../DeleteDialog";
 import { useContext } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
-import NewUserForm from "../Forms/NewUserForm"
+import UserFormDialog from "../FormDialogs/UserFormDialog";
 
 
 export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getUsers }) {
@@ -50,7 +50,7 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
-                        <NewUserForm status={"add"} text={"New User"} type={"New user"} getUsers={getUsers} />
+                        <UserFormDialog status={"add"} text={"New User"} type={"New user"} getUsers={getUsers} />
                     </div>
                 </div>
             </CardHeader>
@@ -145,7 +145,7 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                <NewUserForm status={"edit"} text={"Edit User"} type={"Edit user"} getUsers={getUsers} UserId={id} />
+                                                <UserFormDialog status={"edit"} text={"Edit User"} type={"Edit user"} getUsers={getUsers} UserId={id} />
                                             </Tooltip>
                                             <Tooltip content="Delete User">
                                                 <DeleteDialog onDelete={() => {

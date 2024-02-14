@@ -45,7 +45,7 @@ const TABS = [
 ];
 
 const defaultHeads = ["No", "name", "address", "state", "website", "Actions", ""];
-const hotelHeads = ["No", "name", "type", "description", "price", "quantityAvailable", "Actions", ""];
+const hotelHeads = ["No", "name", "address", "state", "website", "Actions", ""]
 
 
 
@@ -84,7 +84,6 @@ export default function Services() {
         });
 
         if (data?.status === 200) {
-            console.log(data.data);
             setServices(data.data)
         }
     }
@@ -95,7 +94,6 @@ export default function Services() {
 
     const heads = getHeads(selectedService);
 
-    console.log(rowData);
     return (
         <div className="p-6">
             <ServicesTab TABS={TABS} search={false}  >

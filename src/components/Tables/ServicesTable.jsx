@@ -15,16 +15,16 @@ import { useContext, useEffect, useState } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import { SelectedServiceContext } from "../../contexts/ServicesContext";
 import axios from "axios";
-import AddButton from "../Add/AddButton";
+import HotelFormDialog from "../FormDialogs/HotelFormDialog";
 
 
 export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getService }) {
 
-    const [tableRows, setTableRows] =useState(TABLE_ROWS);
+    const [tableRows, setTableRows] = useState(TABLE_ROWS);
     const [token,] = useContext(tokenContext);
     const [selectedService,] = useContext(SelectedServiceContext)
 
-    async function DeleteService(id,service) {
+    async function DeleteService(id, service) {
         console.log("hi fo");
         let data = await axios.delete(`http://localhost:3000/api/v1/${service}/${id}`, {
             headers: {
@@ -38,15 +38,14 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
         if (data?.status === 200) {
             console.log(data);
         }
-        getService(service,token);
+        getService(service, token);
     }
 
     useEffect(() => {
         setTableRows(TABLE_ROWS); // Update the table rows when TABLE_ROWS prop changes
     }, [TABLE_ROWS]);
 
-    const hotels = TABLE_HEAD.length === 8 ? true : false;
-    console.log(TABLE_ROWS);
+    const hotels = selectedService === "Hotels" ? true : false;
 
     return (
         <Card className="h-100 w-full rounded-xl shadow-none	">
@@ -61,8 +60,7 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
-                        <AddButton buttonText={`New ${selectedService}`} dialogTitle={`New ${selectedService}`} addedItem={"hotels"} />
-                        {/* <NewServiceForm status={"add"} text={`New ${selectedService}`} /> */}
+                        {selectedService === "Hotels" ? <HotelFormDialog status={"add"} buttonText={`New Hotel`} dialogTitle={`New Hotel`} getService={getService} /> : "fsd"}
                     </div>
                 </div>
             </CardHeader>
@@ -89,7 +87,7 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                     </thead>
                     <tbody>
                         {hotels ? (
-                            tableRows.map(({ id,name, type, description, price, quantityAvailable }, index) => {
+                            tableRows.map(({ id, name, address, state, website }, index) => {
                                 const isLast = index === tableRows.length - 1;
                                 const classes = isLast ? "p-1" : "p-1 border-b border-blue-gray-50";
                                 return (
@@ -105,13 +103,14 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                                             <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
                                                 <div className="pl-3">
                                                     {name}
+
                                                 </div>
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
                                                 <div className="pl-3">
-                                                    {type}
+                                                    {address}
                                                 </div>
                                             </Typography>
                                         </td>
@@ -119,30 +118,23 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                                             <div className="">
                                                 <Typography component={'span'} variant="small" color="blue-gray" className="font-normal">
                                                     <div className="pl-5">
-                                                        {description}
+                                                        {state}
                                                     </div>
                                                 </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="pl-7">
-                                                {price}
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="pl-7">
-                                                {quantityAvailable}
+                                                {website}
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit Hotel">
-                                                {/* <NewButtonDialog status={"edit"} text={`New ${selectedService}`} type={`Edit ${selectedService}`}>{FormComponent && <FormComponent />}
-                        </NewButtonDialog> */}
-                                                <h1></h1>
+                                                {selectedService === "Hotels" ? <HotelFormDialog status={"edit"} hotelID={id} buttonText={`New Hotel`} dialogTitle={`New Hotel`} getService={getService} /> : "fsd"}
                                             </Tooltip>
                                             <Tooltip content="Delete Hotel">
                                                 <DeleteDialog onDelete={() => {
-                                                    DeleteService(id,selectedService)
+                                                    DeleteService(id, selectedService)
                                                 }} />
                                             </Tooltip>
                                         </td>
@@ -157,7 +149,7 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                                 );
                             })
                         ) : (
-                                tableRows.map(({ id,name, address, state, website }, index) => {
+                            tableRows.map(({ id, name, address, state, website }, index) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast ? "p-1" : "p-1 border-b border-blue-gray-50";
                                 return (
@@ -197,9 +189,9 @@ export function ServicesTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate,
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                {/* <NewButtonDialog status={"edit"} text={`New ${selectedService}`} type={`Edit ${selectedService}`}>{FormComponent && <FormComponent />}
-                        </NewButtonDialog> */}
-                                                <h1></h1>
+                                                {selectedService === "Hotels" ? <HotelFormDialog status={"edit"} hotelID={id} buttonText={`New Hotel`} dialogTitle={`New Hotel`} getService={getService} /> : "fsd"}
+
+
                                             </Tooltip>
                                             <Tooltip content="Delete User">
                                                 <DeleteDialog onDelete={() => {
