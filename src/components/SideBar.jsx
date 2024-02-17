@@ -10,23 +10,22 @@ import {
 import {
     PresentationChartBarIcon,
     Cog6ToothIcon,
-    // UserPlusIcon,
-    // InboxIcon,
     MapIcon,
     UsersIcon,
     CalendarIcon,
-    CurrencyDollarIcon
+    CurrencyDollarIcon,
+    DocumentChartBarIcon,
+    WalletIcon
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { WrenchIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { LogOutDialog } from "./Tables/logOutDialog";
+import useGetRole from "../hooks/useGetRole";
 
 
 
 export function Sidebar() {
-
-    
-
+    const role = useGetRole()
     
     return (
         <>
@@ -35,7 +34,7 @@ export function Sidebar() {
                     <MapIcon className="h-6 w-6 mt-1 mr-2" />
                     <h1 className="text-2xl font-semibold	" > Logo here</h1>
                 </header>
-                <List className="text-white" >
+                {role === "Admin" ? <List className="text-white" >
                     <Link to={"/"} >
                         <ListItem>
                             <ListItemPrefix>
@@ -46,11 +45,11 @@ export function Sidebar() {
                     </Link>
                     <Link to={"/Users"}>
                         <ListItem>
-                        <ListItemPrefix>
-                            <UsersIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Users
-                    </ListItem>
+                            <ListItemPrefix>
+                                <UsersIcon className="h-5 w-5" />
+                            </ListItemPrefix>
+                            Users
+                        </ListItem>
                     </Link>
                     <Link to={"/Services"}>
                         <ListItem>
@@ -60,18 +59,7 @@ export function Sidebar() {
                             Services
                         </ListItem>
                     </Link>
-                    {/* <Link to={ "/notification"}>
-                        <ListItem>
-                            <ListItemPrefix>
-                                <InboxIcon className="h-5 w-5" />
-                            </ListItemPrefix>
-                            Notification
-                            <ListItemSuffix>
-                                <Chip value="14" size="sm" variant="gradient" color="white" className="rounded-full" />
-                            </ListItemSuffix>
-                        </ListItem>
-                    </Link> */}
-                    <Link to={ "/Reservation"}>
+                    <Link to={"/Reservation"}>
                         <ListItem variant='small'>
                             <ListItemPrefix>
                                 <CalendarIcon className="h-5 w-5" />
@@ -79,7 +67,7 @@ export function Sidebar() {
                             Reservation
                         </ListItem>
                     </Link>
-                    <Link to={ "/Finance"}>
+                    <Link to={"/Finance"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <CurrencyDollarIcon className="h-5 w-5" />
@@ -87,15 +75,15 @@ export function Sidebar() {
                             Finance
                         </ListItem>
                     </Link>
-                    {/* <Link to={ "/Admins"}>
+                    <Link to={"/reports"}>
                         <ListItem>
                             <ListItemPrefix>
-                                <UserPlusIcon className="h-5 w-5" />
+                                <DocumentChartBarIcon className="h-5 w-5" />
                             </ListItemPrefix>
-                            Admins
+                            Reports
                         </ListItem>
-                    </Link> */}
-                    <Link to={ "/Settings"}>
+                    </Link>
+                    <Link to={"/Settings"}>
                         <ListItem>
                             <ListItemPrefix>
                                 <Cog6ToothIcon className="h-5 w-5" />
@@ -104,8 +92,43 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <LogOutDialog></LogOutDialog>
-                    
-                </List>
+                </List> :
+                    <List className="text-white" >
+                        <Link to={"/home"} >
+                            <ListItem>
+                                <ListItemPrefix>
+                                    <HomeIcon className="h-5 w-5" />
+                                </ListItemPrefix>
+                                Home
+                            </ListItem>
+                        </Link>
+                        <Link to={"/UserReservation"}>
+                            <ListItem>
+                                <ListItemPrefix>
+                                    <WalletIcon className="h-5 w-5" />
+                                </ListItemPrefix>
+                                Reservation
+                            </ListItem>
+                        </Link>
+                        <Link to={"/UserFinance"}>
+                            <ListItem>
+                                <ListItemPrefix>
+                                    <CurrencyDollarIcon className="h-5 w-5" />
+                                </ListItemPrefix>
+                                Finance
+                            </ListItem>
+                        </Link>
+                        <Link to={"/UserSettings"}>
+                            <ListItem>
+                                <ListItemPrefix>
+                                    <Cog6ToothIcon className="h-5 w-5" />
+                                </ListItemPrefix>
+                                Setting
+                            </ListItem>
+                        </Link>
+                        
+                        <LogOutDialog></LogOutDialog>
+                    </List>}
                 <footer className="absolute w-full  bottom-0 p-3" >
                     <AvatarWithText size={"md"} img={"https://docs.material-tailwind.com/img/face-2.jpg"}>
                         <Typography color="white" variant='small' >

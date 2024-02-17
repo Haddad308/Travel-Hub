@@ -1,37 +1,54 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from "./components/Layout";
-import Admins from "./pages/Admins";
-import Dashboard from "./pages/Dashboard";
-import Finance from "./pages/Finance";
-import Login from "./pages/Login";
-import Reservation from "./pages/Reservation";
-import Services from "./pages/Services";
-import Settings from "./pages/Settings";
-import Users from "./pages/Users";
-import NotFound from "./pages/NotFound";
+import Admins from "./pages/Admin/Admins";
+import Dashboard from "./pages/Admin/Dashboard";
+import Finance from "./pages/Admin/Finance";
+import Login from "./pages/Auth/Login";
+import Reservation from "./pages/Admin/Reservation";
+import Services from "./pages/Admin/Services";
+import Settings from "./pages/Admin/Settings";
+import Users from "./pages/Admin/Users";
+import NotFound from "./pages/Auth/NotFound";
 import { SelectedServiceContext } from './contexts/ServicesContext';
 import { useContext, useEffect, useState } from 'react';
-import DetailsPage from './pages/DetailsPage';
-import UsersBalance from './pages/UsersBalance';
-import UserBalancePage from './pages/UserBalancePage';
+import DetailsPage from './pages/Admin/DetailsPage';
+import UsersBalance from './pages/Admin/UsersBalance';
+import UserBalancePage from './pages/Admin/UserBalancePage';
 import { tokenContext } from './contexts/AuthContext';
 import ProtectRoutes from './components/ProtectRoutes';
+import UnAuth from './pages/Auth/UnAuth';
+import Redirection from './pages/Auth/Redirection';
+import Home from './pages/User/Home';
+import UserReservation from './pages/User/UserReservation';
+import UserFinance from './pages/User/UserFinance';
+import UserSettings from './pages/User/UserSettings';
+import { UserSelectedServiceContext } from './contexts/UserServiceContext';
+import Reports from './pages/Admin/Reports';
 
 let routers = createBrowserRouter([{
   path: "", element: <Layout />, children: [
-    { index: true, element: <ProtectRoutes> <Dashboard /> </ProtectRoutes> },
-    { path: "admins", element: <ProtectRoutes> <Admins /> </ProtectRoutes> },
-    { path: "finance", element: <ProtectRoutes> <Finance /> </ProtectRoutes> },
-    { path: "reservation", element: <ProtectRoutes> <Reservation /> </ProtectRoutes> },
-    { path: "services", element: <ProtectRoutes> <Services /> </ProtectRoutes> },
-    { path: "settings", element: <ProtectRoutes> <Settings /> </ProtectRoutes> },
-    { path: "users", element: <ProtectRoutes> <Users /> </ProtectRoutes> },
-    { path: "details", element: <ProtectRoutes> <DetailsPage /> </ProtectRoutes> },
-    { path: "balances", element: <ProtectRoutes> <UsersBalance /> </ProtectRoutes> },
-    { path: "userbalance", element: <ProtectRoutes> <UserBalancePage /></ProtectRoutes> },
+    { index: true, element: <Redirection /> },
+    { path: "Dashboard", element: <ProtectRoutes allowedRoles={["Admin"]} > <Dashboard /> </ProtectRoutes> },
+    { path: "admins", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Admins /> </ProtectRoutes> },
+    { path: "finance", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Finance /> </ProtectRoutes> },
+    { path: "reservation", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Reservation /> </ProtectRoutes> },
+    { path: "services", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Services /> </ProtectRoutes> },
+    { path: "settings", element: <ProtectRoutes allowedRoles={["Admin"]} > <Settings /> </ProtectRoutes> },
+    { path: "users", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Users /> </ProtectRoutes> },
+    { path: "details", element: <ProtectRoutes allowedRoles={["Admin", "User"]}  > <DetailsPage /> </ProtectRoutes> },
+    { path: "balances", element: <ProtectRoutes allowedRoles={["Admin"]}  > <UsersBalance /> </ProtectRoutes> },
+    { path: "userbalance", element: <ProtectRoutes allowedRoles={["Admin"]} > <UserBalancePage /></ProtectRoutes> },
+    { path: "reports", element: <ProtectRoutes allowedRoles={["Admin"]} > <Reports /></ProtectRoutes> },
+
+
+    { path: "home", element: <ProtectRoutes allowedRoles={["User"]} > <Home /></ProtectRoutes> },
+    { path: "UserReservation", element: <ProtectRoutes allowedRoles={["User"]} > <UserReservation /></ProtectRoutes> },
+    { path: "UserFinance", element: <ProtectRoutes allowedRoles={["User"]} > <UserFinance /></ProtectRoutes> },
+    { path: "UserSettings", element: <ProtectRoutes allowedRoles={["User"]} > <UserSettings /></ProtectRoutes> },
   ]
 },
 { path: "login", element: <Login /> },
+{ path: "unauthorized", element: <UnAuth /> },
 { path: "*", element: <NotFound /> }
 ])
 
@@ -40,16 +57,21 @@ let routers = createBrowserRouter([{
 const App = () => {
 
   // check if token is exists in localStorage. 
-  let [, setToken] = useContext(tokenContext);
-  useEffect(() => {
-    if (localStorage.getItem("userToken")) setToken(localStorage.getItem("userToken"));
-  })
+  let [token, setToken] = useContext(tokenContext);
 
   const selectedService = useState("Hotels");
+  const UserSelectedService = useState("Hotels");
+
+  useEffect(() => {
+    if (localStorage.getItem("userToken")) setToken(localStorage.getItem("userToken"));
+  }, [token, setToken])
+
   return (
-    <SelectedServiceContext.Provider value={selectedService}>
-      <RouterProvider router={routers} />
-    </SelectedServiceContext.Provider>
+    <UserSelectedServiceContext.Provider value={UserSelectedService} >
+      <SelectedServiceContext.Provider value={selectedService}>
+        <RouterProvider router={routers} />
+      </SelectedServiceContext.Provider>
+    </UserSelectedServiceContext.Provider>
   );
 }
 

@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import Alert from '../components/Alert';
-import ButtonLoader from '../components/ButtonLoader';
-import { tokenContext } from '../contexts/AuthContext';
+import Alert from '../../components/Alert';
+import ButtonLoader from '../../components/ButtonLoader';
+import { tokenContext } from '../../contexts/AuthContext';
 
 export default function Login() {
     const [, SetToken] = useContext(tokenContext);
@@ -13,59 +13,7 @@ export default function Login() {
     const [apiError, setApiError] = useState('');
     let navigate = useNavigate();
 
-    useEffect(() => {
-        // Check token expiration on component mount and refresh if necessary
-        const checkTokenExpiration = async () => {
-            const userToken = localStorage.getItem('userToken');
-            const refreshToken = localStorage.getItem('refreshToken');
 
-            if (!userToken || !refreshToken) {
-                console.log('User token or refresh token not available');
-                return;
-            }
-
-            try {
-                const decodedToken = JSON.parse(atob(userToken.split('.')[1]));
-                const expirationTime = decodedToken.exp * 1000; // Convert to milliseconds
-                const timeRemaining = expirationTime - Date.now();
-
-                console.log('Time remaining until token expiration:', timeRemaining);
-
-                if (timeRemaining <= 0) {
-                    console.log('Token expired, attempting to refresh...');
-                    const refreshSuccess = await refreshToken(refreshToken);
-
-                    if (!refreshSuccess) {
-                        console.log('Failed to refresh token');
-                        // Handle token refresh failure
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking token expiration:', error);
-                // Handle error
-            }
-        };
-
-        checkTokenExpiration();
-    }, []);
-
-    // async function refreshToken(refreshToken) {
-    //     try {
-    //         const response = await axios.post('http://localhost:3000/api/v1/auth/refresh', {
-    //             refreshToken,
-    //         });
-
-    //         const { token, refreshToken: newRefreshToken } = response.data;
-
-    //         localStorage.setItem('userToken', token);
-    //         localStorage.setItem('refreshToken', newRefreshToken);
-    //         console.log('Token refreshed successfully');
-    //         return true;
-    //     } catch (error) {
-    //         console.error('Failed to refresh token:', error);
-    //         return false;
-    //     }
-    // }
 
     async function signIn(values) {
         setIsLoading(true);
@@ -73,14 +21,12 @@ export default function Login() {
 
         try {
             const response = await axios.post('http://localhost:3000/api/v1/auth/email/login', values);
-
             if (response.status === 200) {
-                const { token, refreshToken } = response.data;
+                const { token } = response.data;
                 setIsLoading(false);
                 navigate('/');
                 SetToken(token);
                 localStorage.setItem('userToken', token);
-                localStorage.setItem('refreshToken', refreshToken);
             }
         } catch (error) {
             console.error('Login error:', error);

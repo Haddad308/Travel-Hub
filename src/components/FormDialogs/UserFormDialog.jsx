@@ -161,6 +161,10 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
                 uploadImage(file).then((id) => {
                     console.log("checking the Image.", id); // Check if image is properly updated
                     values['profilePhotoId'] = id; // This might not work as expected
+                    values['role'] = {
+                        "id": 2,
+                        "name": "User"
+                    }
                     if (status === "add") {
                         addUser(values).then(() => {
                             notify();

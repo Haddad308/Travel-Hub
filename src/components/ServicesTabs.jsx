@@ -13,6 +13,7 @@ import {
 } from "@material-tailwind/react";
 import { useContext } from "react";
 import { SelectedServiceContext } from "../contexts/ServicesContext";
+import { UserSelectedServiceContext } from "../contexts/UserServiceContext";
 
 
 const commonStyles = "w-5 pb-[3.2px] text-[#5e5c5c] pr-1";
@@ -29,9 +30,10 @@ const iconMap = {
 };
 
 
-export function ServicesTab({ TABS, filter, search, children }) {
+export function ServicesTab({ TABS, search, children }) {
 
     const [, SetSelectedService] = useContext(SelectedServiceContext)
+    const [, UserSetSelectedService] = useContext(UserSelectedServiceContext)
 
     return (
         <Card className="h-full w-full">
@@ -41,8 +43,8 @@ export function ServicesTab({ TABS, filter, search, children }) {
                         <TabsHeader>
                             {TABS.map(({ label, value }) => (
                                 <Tab className="text-nowrap" key={value} value={value} onClick={() => {
-                                    // filter(label);
                                     SetSelectedService(label); 
+                                    UserSetSelectedService(label); 
                                 }} >
                                     <div className="flex justify-center items-center">
                                         {iconMap[value]}

@@ -2,11 +2,11 @@ import { ChevronLeftIcon } from "@heroicons/react/24/outline"
 import { PencilSquareIcon } from "@heroicons/react/24/solid"
 import { Button } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
-import mainImage from "../assets/images/tzoo.hd.15674.2803.755356.HiltonAlexandriaOldTown_CP.jpg"
-import img1 from "../assets/images/5a79fd61.webp"
-import img2 from "../assets/images/original.jpg"
-import img3 from "../assets/images/jhbbr-guestrooms-6202-hor-clsc.jpg"
-import img4 from "../assets/images/th (8).jpeg"
+import mainImage from "../../assets/images/tzoo.hd.15674.2803.755356.HiltonAlexandriaOldTown_CP.jpg"
+import img1 from "../../assets/images/5a79fd61.webp"
+import img2 from "../../assets/images/original.jpg"
+import img3 from "../../assets/images/jhbbr-guestrooms-6202-hor-clsc.jpg"
+import img4 from "../../assets/images/th (8).jpeg"
 export default function DetailsPage() {
   return (
     <div className="flex flex-col bg-white p-4 border-t-2  border-gray-500">

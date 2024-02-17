@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Table } from "../components/Tables/Table";
-import { tokenContext } from "../contexts/AuthContext";
+import { Table } from "../../components/Tables/Table";
+import { tokenContext } from "../../contexts/AuthContext";
 import axios from "axios";
 
 export default function Users() {

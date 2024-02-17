@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
-import { TabsComponent } from "../components/Tabs";
-import ReservationCard from "../components/ReservationCard";
+import { TabsComponent } from "../../components/Tabs";
+import ReservationCard from "../../components/ReservationCard";
 
 export default function Reservation() {
 

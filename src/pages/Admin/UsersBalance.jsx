@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import UserBalance from "../components/UserBalance";
+import UserBalance from "../../components/UserBalance";
 import { Input } from "@material-tailwind/react";
 
 export default function UsersBalance() {

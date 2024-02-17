@@ -1,11 +1,25 @@
 /* eslint-disable react/prop-types */
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
+import useGetRole from "../hooks/useGetRole";
+
+export default function ProtectRoutes({ allowedRoles, children }) {
+    const auth = localStorage.getItem("userToken");
+    const role = useGetRole()
+    console.log("hello fron bridge",role);
+    const location = useLocation();
+
+    
 
 
-export default function ProtectRoutes({ children }) {
-    if (localStorage.getItem("userToken")) {
-        return children 
+
+    if (auth) {
+        if (allowedRoles.includes(role))
+            return children
+        else
+            return <Navigate to={"/unauthorized"} state={{ from: location }} replace />
     } else {
-        return <Navigate to={"/login"} />
+        return <Navigate to={"/login"} state={{ from: location }} replace />
     }
+
+
 }

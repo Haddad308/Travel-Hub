@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // import { Table } from "../components/Table";
 import { useContext, useEffect, useState } from "react";
-import { ServicesTable } from "../components/Tables/ServicesTable";
-import { ServicesTab } from "../components/ServicesTabs";
-import { SelectedServiceContext } from "../contexts/ServicesContext";
+import { ServicesTable } from "../../components/Tables/ServicesTable";
+import { ServicesTab } from "../../components/ServicesTabs";
+import { SelectedServiceContext } from "../../contexts/ServicesContext";
 import axios from "axios";
-import { tokenContext } from "../contexts/AuthContext";
-
+import { tokenContext } from "../../contexts/AuthContext";
 
 
 const TABS = [
@@ -44,17 +43,11 @@ const TABS = [
     }
 ];
 
-const defaultHeads = ["No", "name", "address", "state", "website", "Actions", ""];
-const hotelHeads = ["No", "name", "address", "state", "website", "Actions", ""]
-
 
 
 
 export default function Services() {
 
-    const getHeads = (service) => {
-        return service === "Hotels" ? hotelHeads : defaultHeads;
-    };
     
     
     
@@ -92,13 +85,12 @@ export default function Services() {
         getService(selectedService,token)
     }, [selectedService,token])
 
-    const heads = getHeads(selectedService);
+    console.log("Heelp ", rowData);
 
     return (
         <div className="p-6">
             <ServicesTab TABS={TABS} search={false}  >
                 <ServicesTable
-                    TABLE_HEAD={heads}
                     TABLE_ROWS={rowData}
                     NumberOfPages={NumberOfPages}
                     pageNumber={pageNumber}
