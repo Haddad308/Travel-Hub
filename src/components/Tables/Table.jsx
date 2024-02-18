@@ -9,8 +9,8 @@ import {
     Tooltip,
     Avatar,
 } from "@material-tailwind/react";
-import { SimplePagination } from "../Pagination";
-import { DeleteDialog } from "../DeleteDialog";
+import { SimplePagination } from "../TableComponents/Pagination";
+import { DeleteDialog } from "../TableComponents/DeleteDialog";
 import { useContext } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import UserFormDialog from "../FormDialogs/UserFormDialog";

@@ -1,6 +1,6 @@
 import { Chip } from "@material-tailwind/react";
-import { FinanceTable } from "../../components/FininaceTable";
-import { AvatarWithText } from "../../components/avatar";
+import { FinanceTable } from "../../components/Tables/FininaceTable";
+import { AvatarWithText } from "../../components/General/avatar";
 import { useState } from "react";
 
 

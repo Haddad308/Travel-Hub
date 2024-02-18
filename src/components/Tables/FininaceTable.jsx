@@ -7,9 +7,9 @@ import {
     CardFooter,
     Tooltip,
 } from "@material-tailwind/react";
-import { SimplePagination } from "./Pagination";
-import { DeleteDialog } from "./DeleteDialog";
-import { AvatarWithText } from "./avatar";
+import { SimplePagination } from "../TableComponents/Pagination";
+import { DeleteDialog } from "../TableComponents/DeleteDialog";
+import { AvatarWithText } from "../General/avatar";
 
 
 
@@ -90,7 +90,7 @@ export function FinanceTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, 
                                                 <p>{name}</p>
                                                 <p>mohamed@gamil.com</p>
                                             </AvatarWithText>
-                                            
+
                                         </td>
                                         <td className={classes}>
                                             <div className="">
@@ -126,7 +126,7 @@ export function FinanceTable({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, 
                                                 <DeleteDialog />
                                             </Tooltip>
                                         </td>
-                                        
+
                                     </tr>
                                 );
                             },

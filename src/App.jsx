@@ -1,5 +1,5 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Layout from "./components/Layout";
+import { RouterProvider, createHashRouter } from 'react-router-dom';
+import Layout from "../src/components/Layout/Layout";
 import Admins from "./pages/Admin/Admins";
 import Dashboard from "./pages/Admin/Dashboard";
 import Finance from "./pages/Admin/Finance";
@@ -15,17 +15,18 @@ import DetailsPage from './pages/Admin/DetailsPage';
 import UsersBalance from './pages/Admin/UsersBalance';
 import UserBalancePage from './pages/Admin/UserBalancePage';
 import { tokenContext } from './contexts/AuthContext';
-import ProtectRoutes from './components/ProtectRoutes';
+import ProtectRoutes from './Routes/ProtectRoutes';
 import UnAuth from './pages/Auth/UnAuth';
-import Redirection from './pages/Auth/Redirection';
+import Redirection from './Routes/Redirection';
 import Home from './pages/User/Home';
 import UserReservation from './pages/User/UserReservation';
 import UserFinance from './pages/User/UserFinance';
 import UserSettings from './pages/User/UserSettings';
 import { UserSelectedServiceContext } from './contexts/UserServiceContext';
 import Reports from './pages/Admin/Reports';
+import { NextUIProvider } from '@nextui-org/system';
 
-let routers = createBrowserRouter([{
+let routers = createHashRouter([{
   path: "", element: <Layout />, children: [
     { index: true, element: <Redirection /> },
     { path: "Dashboard", element: <ProtectRoutes allowedRoles={["Admin"]} > <Dashboard /> </ProtectRoutes> },
@@ -52,26 +53,27 @@ let routers = createBrowserRouter([{
 { path: "*", element: <NotFound /> }
 ])
 
-
-
 const App = () => {
 
   // check if token is exists in localStorage. 
   let [token, setToken] = useContext(tokenContext);
 
-  const selectedService = useState("Hotels");
-  const UserSelectedService = useState("Hotels");
-
   useEffect(() => {
     if (localStorage.getItem("userToken")) setToken(localStorage.getItem("userToken"));
   }, [token, setToken])
 
+  // To make Tabs working. 
+  const selectedService = useState("Hotels");
+  const UserSelectedService = useState("Hotels");
+
   return (
-    <UserSelectedServiceContext.Provider value={UserSelectedService} >
-      <SelectedServiceContext.Provider value={selectedService}>
-        <RouterProvider router={routers} />
-      </SelectedServiceContext.Provider>
-    </UserSelectedServiceContext.Provider>
+    <NextUIProvider>
+      <UserSelectedServiceContext.Provider value={UserSelectedService} >
+        <SelectedServiceContext.Provider value={selectedService}>
+          <RouterProvider router={routers} />
+        </SelectedServiceContext.Provider>
+      </UserSelectedServiceContext.Provider>
+    </NextUIProvider>
   );
 }
 

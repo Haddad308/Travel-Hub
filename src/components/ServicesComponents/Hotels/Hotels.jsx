@@ -1,4 +1,4 @@
-import HotelView from '../../../components/View/HotelView'
+import HotelView from './HotelView'
 import mainImage from "../../../assets/images/b43dedc5.webp"
 import mainImage2 from "../../../assets/images/jhbbr-guestrooms-6202-hor-clsc.jpg"
 import mainImage3 from "../../../assets/images/tzoo.hd.15674.2803.755356.HiltonAlexandriaOldTown_CP.jpg"

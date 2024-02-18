@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { ServicesTab } from "../../components/ServicesTabs";
-import Hotels from "./Services/Hotels";
+import { ServicesTab } from "../../components/Tabs/ServicesTabs";
+import Hotels from "../../components/ServicesComponents/Hotels/Hotels";
 import { UserSelectedServiceContext } from "../../contexts/UserServiceContext";
-import Flights from "./Services/Flights";
+import Flights from "../../components/ServicesComponents/Flights/Flights";
 
 export default function Home() {
 

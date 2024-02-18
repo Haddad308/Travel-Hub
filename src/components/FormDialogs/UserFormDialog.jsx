@@ -14,12 +14,12 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
-import ButtonLoader from "../ButtonLoader";
-import Alert from "../Alert";
-import { RemoveEmptyValues } from "../../hooks/RemoveEmptyValues";
+import ButtonLoader from "../General/ButtonLoader";
+import Alert from "../FromComponants/Alert";
+import { RemoveEmptyValues } from "../../Middlewares/RemoveEmptyValues";
 
 
 export default function UserFormDialog({ text, status, type, getUsers, UserId }) {

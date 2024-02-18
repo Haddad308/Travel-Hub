@@ -1,4 +1,4 @@
-import { AvatarWithText } from "./avatar";
+import { AvatarWithText } from "../General/avatar";
 import {
     List,
     ListItem,
@@ -19,14 +19,14 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { HomeIcon, WrenchIcon } from "@heroicons/react/24/outline";
-import { LogOutDialog } from "./Tables/logOutDialog";
-import useGetRole from "../hooks/useGetRole";
+import { LogOutDialog } from "../Tables/logOutDialog";
+import useGetRole from "../../hooks/useGetRole";
 
 
 
 export function Sidebar() {
     const role = useGetRole()
-    
+
     return (
         <>
             <div className="top-0 bottom-0 lg:left-0 fixed  overflow-y-auto w-[250px] bg-[#415A77] text-white" >
@@ -126,7 +126,7 @@ export function Sidebar() {
                                 Setting
                             </ListItem>
                         </Link>
-                        
+
                         <LogOutDialog></LogOutDialog>
                     </List>}
                 <footer className="absolute w-full  bottom-0 p-3" >

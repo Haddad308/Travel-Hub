@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import line from "../../assets/images/Group 279.svg"
+import line from "../../../assets/images/Group 279.svg"
 import { Button } from "@material-tailwind/react"
 import { ClockIcon } from "@heroicons/react/24/solid"
 export default function FlightView({img}) {

@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import UserBalance from "../../components/UserBalance";
-import { FinanceTable } from "../../components/FininaceTable";
+import UserBalance from "../../components/Finance/UserBalance";
+import { FinanceTable } from "../../components/Tables/FininaceTable";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 

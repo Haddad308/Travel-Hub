@@ -14,11 +14,11 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 import { tokenContext } from "../../contexts/AuthContext";
-import ButtonLoader from "../ButtonLoader";
+import ButtonLoader from "../General/ButtonLoader";
 import toast, { Toaster } from "react-hot-toast";
 import { SelectedServiceContext } from "../../contexts/ServicesContext";
-import { RemoveEmptyValues } from "../../hooks/RemoveEmptyValues";
-import Alert from "../Alert";
+import { RemoveEmptyValues } from "../../Middlewares/RemoveEmptyValues";
+import Alert from "../FromComponants/Alert";
 
 
 // eslint-disable-next-line react/prop-types

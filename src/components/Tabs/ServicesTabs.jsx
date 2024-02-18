@@ -12,8 +12,8 @@ import {
 
 } from "@material-tailwind/react";
 import { useContext } from "react";
-import { SelectedServiceContext } from "../contexts/ServicesContext";
-import { UserSelectedServiceContext } from "../contexts/UserServiceContext";
+import { SelectedServiceContext } from "../../contexts/ServicesContext";
+import { UserSelectedServiceContext } from "../../contexts/UserServiceContext";
 
 
 const commonStyles = "w-5 pb-[3.2px] text-[#5e5c5c] pr-1";

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button, Tooltip, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-import { DeleteDialog } from '../DeleteDialog';
+import { DeleteDialog } from '../TableComponents/DeleteDialog';
 import { useContext } from 'react';
 import { SelectedServiceContext } from '../../contexts/ServicesContext';
 import RoomsFormDialog from '../FormDialogs/RoomsFormDialog';

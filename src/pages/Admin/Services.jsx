@@ -2,7 +2,7 @@
 // import { Table } from "../components/Table";
 import { useContext, useEffect, useState } from "react";
 import { ServicesTable } from "../../components/Tables/ServicesTable";
-import { ServicesTab } from "../../components/ServicesTabs";
+import { ServicesTab } from "../../components/Tabs/ServicesTabs";
 import { SelectedServiceContext } from "../../contexts/ServicesContext";
 import axios from "axios";
 import { tokenContext } from "../../contexts/AuthContext";

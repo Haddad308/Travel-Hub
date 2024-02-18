@@ -7,7 +7,7 @@ import {
     CardFooter,
 
 } from "@material-tailwind/react";
-import { SimplePagination } from "../Pagination";
+import { SimplePagination } from "../TableComponents/Pagination";
 import { useContext, useEffect, useState } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import { SelectedServiceContext } from "../../contexts/ServicesContext";

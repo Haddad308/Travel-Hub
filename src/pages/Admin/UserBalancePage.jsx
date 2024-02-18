@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FinanceTable } from "../../components/FininaceTable";
-import { AvatarWithText } from "../../components/avatar";
+import { FinanceTable } from "../../components/Tables/FininaceTable";
+import { AvatarWithText } from "../../components/General/avatar";
 import { Chip } from "@material-tailwind/react";
 
 const heads = ["No", "User", "Current Balance", "Amount", "Date", "Actions"];

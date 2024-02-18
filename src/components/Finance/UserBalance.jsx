@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { AvatarWithText } from "./avatar";
+import { AvatarWithText } from "../General/avatar";
 
 export default function UserBalance() {
     return (

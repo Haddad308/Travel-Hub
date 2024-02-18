@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@material-tailwind/react";
-import { AvatarWithText } from "./avatar";
+import { AvatarWithText } from "../General/avatar";
 import { ClockIcon } from "@heroicons/react/24/outline";
 
 export default function ReservationCard({ AgencyName, AgencyEmail, AgencyContact, status, info1, info2, info3 }) {

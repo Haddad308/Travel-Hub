@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { Sidebar } from './sideBar'
+import { Sidebar } from './SideBar'
 
 export default function Layout() {
     const location = useLocation();

@@ -1,9 +1,13 @@
-/** @type {import('tailwindcss').Config} */
 import withMT from "@material-tailwind/react/utils/withMT";
-import formsPlugin from '@tailwindcss/forms'; // Import the forms plugin separately
 import '@tailwindcss/forms';
+import { nextui } from "@nextui-org/react"; // Import nextui config
+
 export default withMT({
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}", // Include nextui content
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -11,7 +15,8 @@ export default withMT({
       }
     }
   },
+  darkMode: "class", // Include dark mode config
   plugins: [
-    formsPlugin, // Use the imported forms plugin here
+    nextui(), // Include nextui plugin
   ],
 });
