@@ -5,8 +5,10 @@ import { DeleteDialog } from '../TableComponents/DeleteDialog';
 import { useContext } from 'react';
 import { SelectedServiceContext } from '../../contexts/ServicesContext';
 import RoomsFormDialog from '../FormDialogs/RoomsFormDialog';
+import { Skeleton } from '@nextui-org/react';
 
-export default function RoomsTable({ rows, deleteService, pageNumber, getService }) {
+export default function RoomsTable({ isLoading, rows, deleteService, pageNumber, getService }) {
+    const skel = [1, 2, 3, 4, 5]
 
     const TABLE_HEAD = ["No", "Name", "Type", "Description", "Price", "Actions", ""];
     const [selectedService,] = useContext(SelectedServiceContext)
@@ -33,7 +35,27 @@ export default function RoomsTable({ rows, deleteService, pageNumber, getService
                 </tr>
             </thead>
             <tbody>
-                {rows.map(({ id, name, type, description, price }, index) => {
+                {isLoading ? skel.map((id) => {
+                    const classes = " justify-center items-center  p-5 border-b border-blue-gray-50";
+                    return (
+                        <tr key={id}>
+                            <td className={classes}>
+                                <Skeleton className="h-3 w-4/5 rounded-lg" />
+                            </td>
+                            <td className={classes}>
+                                <Skeleton className="h-3 w-4/5 rounded-lg" />
+                            </td>
+                            <td className={classes}>
+                                <Skeleton className="h-3 w-4/5 rounded-lg" />
+                            </td>
+                            <td className={classes}>
+                                <Skeleton className="h-3 w-4/5 rounded-lg" />
+                            </td>
+                            <td className={classes}>
+                                <Skeleton className="h-3 w-4/5 rounded-lg" />
+                            </td>
+                        </tr>)
+                }) : rows.map(({ id, name, type, description, price }, index) => {
                     const isLast = index === rows.length - 1;
                     const classes = isLast ? "p-1" : "p-1 border-b border-blue-gray-50";
                     return (

@@ -14,7 +14,7 @@ import {
 import { useContext } from "react";
 import { SelectedServiceContext } from "../../contexts/ServicesContext";
 import { UserSelectedServiceContext } from "../../contexts/UserServiceContext";
-
+import useGetRole from "../../hooks/useGetRole";
 
 const commonStyles = "w-5 pb-[3.2px] text-[#5e5c5c] pr-1";
 
@@ -34,6 +34,7 @@ export function ServicesTab({ TABS, search, children }) {
 
     const [, SetSelectedService] = useContext(SelectedServiceContext)
     const [, UserSetSelectedService] = useContext(UserSelectedServiceContext)
+    const role = useGetRole()
 
     return (
         <Card className="h-full w-full">
@@ -43,8 +44,7 @@ export function ServicesTab({ TABS, search, children }) {
                         <TabsHeader>
                             {TABS.map(({ label, value }) => (
                                 <Tab className="text-nowrap" key={value} value={value} onClick={() => {
-                                    SetSelectedService(label); 
-                                    UserSetSelectedService(label); 
+                                    role === "Admin" ? SetSelectedService(label) : UserSetSelectedService(label);
                                 }} >
                                     <div className="flex justify-center items-center">
                                         {iconMap[value]}

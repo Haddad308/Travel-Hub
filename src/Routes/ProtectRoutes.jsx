@@ -5,12 +5,7 @@ import useGetRole from "../hooks/useGetRole";
 export default function ProtectRoutes({ allowedRoles, children }) {
     const auth = localStorage.getItem("userToken");
     const role = useGetRole()
-    console.log("hello fron bridge",role);
     const location = useLocation();
-
-    
-
-
 
     if (auth) {
         if (allowedRoles.includes(role))

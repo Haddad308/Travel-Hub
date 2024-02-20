@@ -1,37 +1,16 @@
 /* eslint-disable react/prop-types */
-import { BuildingOffice2Icon, GlobeEuropeAfricaIcon, LifebuoyIcon, MagnifyingGlassIcon, MoonIcon, Square3Stack3DIcon, SunIcon, TicketIcon } from "@heroicons/react/24/outline";
-// import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
     Card,
     CardHeader,
     Input,
-    // Typography,
-    // Button,
     CardBody,
-    // Chip,
-    // CardFooter,
     Tabs,
     TabsHeader,
     Tab,
-    // Avatar,
-    // IconButton,
-    // Tooltip,
 } from "@material-tailwind/react";
 
-
-const commonStyles = "w-5 pb-[3.2px] text-[#5e5c5c] pr-1";
-
-const iconMap = {
-    Hotels: <BuildingOffice2Icon className={commonStyles} />,
-    Rooms: <MoonIcon className={commonStyles} />,
-    Flights: <GlobeEuropeAfricaIcon className={commonStyles} />,
-    Safari: <SunIcon className={commonStyles} />,
-    Cruises: <LifebuoyIcon className={commonStyles} />,
-    Transportation: <TicketIcon className={commonStyles} />,
-    Package: <Square3Stack3DIcon className={commonStyles} />,
-};
-
-
+// *This works with the reservation page. 
 export function TabsComponent({ TABS, filter, search, children }) {
     return (
         <Card className="h-full w-full">
@@ -43,10 +22,8 @@ export function TabsComponent({ TABS, filter, search, children }) {
                             {TABS.map(({ label, value }) => (
                                 <Tab key={value} value={value} onClick={() => {
                                     filter(label)
-                                    
                                 }} >
                                     <div className="flex justify-center items-center">
-                                        {iconMap[label]}
                                         <p className="text-[#808080]">
                                             {label}
                                         </p>

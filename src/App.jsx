@@ -25,11 +25,13 @@ import UserSettings from './pages/User/UserSettings';
 import { UserSelectedServiceContext } from './contexts/UserServiceContext';
 import Reports from './pages/Admin/Reports';
 import { NextUIProvider } from '@nextui-org/system';
+import Agencies from './pages/Admin/Agencies';
 
 let routers = createHashRouter([{
   path: "", element: <Layout />, children: [
     { index: true, element: <Redirection /> },
     { path: "Dashboard", element: <ProtectRoutes allowedRoles={["Admin"]} > <Dashboard /> </ProtectRoutes> },
+    { path: "Agencies", element: <ProtectRoutes allowedRoles={["Admin"]} > <Agencies /> </ProtectRoutes> },
     { path: "admins", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Admins /> </ProtectRoutes> },
     { path: "finance", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Finance /> </ProtectRoutes> },
     { path: "reservation", element: <ProtectRoutes allowedRoles={["Admin"]}  > <Reservation /> </ProtectRoutes> },

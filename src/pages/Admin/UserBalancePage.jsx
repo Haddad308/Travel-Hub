@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FinanceTable } from "../../components/Tables/FininaceTable";
 import { AvatarWithText } from "../../components/General/avatar";
 import { Chip } from "@material-tailwind/react";
+import GetNumberOfPages from "../../Middlewares/GetNumberOfPages";
 
 const heads = ["No", "User", "Current Balance", "Amount", "Date", "Actions"];
 
@@ -77,11 +78,7 @@ export default function UserBalancePage() {
     const paginate = (pageNumber) => {
         setPageNumber(pageNumber);
     };
-    const rowsPerPage = 5;
-    const indexFirstItem = (pageNumber - 1) * rowsPerPage;
-    const indexLastItem = pageNumber * rowsPerPage;
-    const rowData = transactions.slice(indexFirstItem, indexLastItem);
-    const NumberOfPages = Math.ceil(transactions.length / rowsPerPage);
+    const { rowData, NumberOfPages } = GetNumberOfPages(pageNumber, transactions, 5)
 
     return (
         <div>

@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import Alert from '../../components/FromComponants/Alert';
 import { tokenContext } from '../../contexts/AuthContext';
 import LoginVector from "../../assets/Icons/LoginVector.svg";
-
 import { EyeSlashFilledIcon } from '../../components/Icons/EyeSlashFilledIcon';
 import { EyeFilledIcon } from '../../components/Icons/EyeFilledIcon';
 import { Input } from '@nextui-org/input';
@@ -79,7 +78,7 @@ export default function Login() {
                             name="email"
                             onChange={formHandler.handleChange}
                             onBlur={formHandler.handleBlur}
-                            value={formHandler.values.email}
+                            value={formHandler.values.email.trim()}
                             className='mb-5'
                             isClearable
                             type="email"
@@ -97,7 +96,7 @@ export default function Login() {
                             required
                             onChange={formHandler.handleChange}
                             onBlur={formHandler.handleBlur}
-                            value={formHandler.values.password}
+                            value={formHandler.values.password.trim()}
                             id="password"
                             name="password"
                             label="Password"

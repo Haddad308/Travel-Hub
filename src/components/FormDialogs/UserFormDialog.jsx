@@ -1,8 +1,8 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useFormik } from "formik";
 import * as Yup from 'yup'; // For validation. 
-/* eslint-disable react/prop-types */
 import axios from 'axios';
 import {
     Button,
@@ -12,9 +12,11 @@ import {
     DialogFooter,
     Input,
     IconButton,
+    Select,
+    Option,
 } from "@material-tailwind/react";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import ButtonLoader from "../General/ButtonLoader";
@@ -31,6 +33,7 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState("");
     const [apiErrorImg, setApiErrorImg] = useState("");
+    const [agencies, SetAgencies] = useState([]);
     const notify = () => toast.success('User Added Successfully.');
     const handleOpen = (value) => setSize(value);
 
@@ -64,7 +67,6 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
             setIsLoading(false); // Set loading state to false regardless of success or failure
         }
     }
-
 
     async function addUser(values) {
         // Set loading state to true
@@ -129,14 +131,34 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
         }
     }
 
+    async function getAgencies(token) {
 
+        let data = await axios.get("http://localhost:3000/api/v1/travel-offices", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
+
+        if (data?.status === 200) {
+            console.log("from get function", data.data);
+            SetAgencies(data.data)
+        }
+    }
+
+    useEffect(() => {
+        getAgencies(token)
+    }, [token])
 
     const formHandler = useFormik({
         initialValues: {
             email: "",
             password: "",
             firstName: "",
-            lastName: ""
+            lastName: "",
+            travelOfficeId: null
         },
         validationSchema: () => {
             if (status === "add") {
@@ -144,14 +166,16 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
                     email: Yup.string().email('Invalid email address').required('Required'),
                     password: Yup.string().required('Required').min(6, 'Password must be at least 6 characters'),
                     firstName: Yup.string().required('Required'),
-                    lastName: Yup.string().required('Required')
+                    lastName: Yup.string().required('Required'),
+                    travelOfficeId: Yup.number().required('Required')
                 });
             } else {
                 return Yup.object({
                     email: Yup.string().matches(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, 'Invalid email address'),
                     password: Yup.string().min(6, 'Password must be at least 6 characters'),
                     firstName: Yup.string(),
-                    lastName: Yup.string()
+                    lastName: Yup.string(),
+                    travelOfficeId: Yup.number()
                 });
             }
         },
@@ -162,8 +186,7 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
                     console.log("checking the Image.", id); // Check if image is properly updated
                     values['profilePhotoId'] = id; // This might not work as expected
                     values['role'] = {
-                        "id": 2,
-                        "name": "User"
+                        "id": 4 // Agency
                     }
                     if (status === "add") {
                         addUser(values).then(() => {
@@ -183,6 +206,8 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
             }
         }
     })
+
+    console.log("",formHandler.errors);
 
     return (
         <>
@@ -253,6 +278,28 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
                                         />
                                         {formHandler.touched.lastName && formHandler.errors.lastName ? (
                                             <div className='text-red-600' >{formHandler.errors.lastName}</div>
+                                        ) : null}
+                                    </div>
+                                    <div className="py-3" >
+                                        <label htmlFor="travelOfficeId">Agency</label>
+                                        <Select
+                                            id="travelOfficeId"
+                                            className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10"
+                                            labelProps={{
+                                                className: "hidden",
+                                            }}
+                                            containerProps={{ className: "min-w-[100px]" }}
+                                            onChange={(value) => formHandler.setFieldValue('travelOfficeId', value)} 
+                                            onBlur={formHandler.handleBlur}
+                                            value={formHandler.values.travelOfficeId}
+                                            label="Select Agency"
+                                        >
+                                            {agencies.map(({ id, name }) => (
+                                                <Option key={id} value={id} >{name}</Option>
+                                            ))}
+                                        </Select>
+                                        {formHandler.touched.travelOfficeId && formHandler.errors.travelOfficeId ? (
+                                            <div className='text-red-600' >{formHandler.errors.travelOfficeId}</div>
                                         ) : null}
                                     </div>
                                     {status === "add" ? <div className="py-3" >

@@ -18,7 +18,7 @@ import RoomsFormDialog from "../FormDialogs/RoomsFormDialog";
 import RoomsTable from "../ViewTables/RoomsTable";
 
 
-export function ServicesTable({ TABLE_ROWS, NumberOfPages, paginate, pageNumber, getService }) {
+export function ServicesTable({ isLoading, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getService }) {
 
     const [token,] = useContext(tokenContext);
     const [selectedService,] = useContext(SelectedServiceContext)
@@ -36,8 +36,8 @@ export function ServicesTable({ TABLE_ROWS, NumberOfPages, paginate, pageNumber,
     }
 
     const tables = {
-        "Hotels": <HotelsTable deleteService={DeleteService} rows={TABLE_ROWS} pageNumber={pageNumber} getService={getService} /> ,
-        "hotel-Rooms": <RoomsTable deleteService={DeleteService} rows={TABLE_ROWS} pageNumber={pageNumber} getService={getService} />,
+        "Hotels": <HotelsTable isLoading={isLoading} deleteService={DeleteService} rows={TABLE_ROWS} pageNumber={pageNumber} getService={getService} /> ,
+        "hotel-Rooms": <RoomsTable isLoading={isLoading} deleteService={DeleteService} rows={TABLE_ROWS} pageNumber={pageNumber} getService={getService} />,
         "Flights": "",
         "Safari": "",
         "Cruises": "",

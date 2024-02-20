@@ -14,10 +14,12 @@ import { DeleteDialog } from "../TableComponents/DeleteDialog";
 import { useContext } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import UserFormDialog from "../FormDialogs/UserFormDialog";
+import { Skeleton } from "@nextui-org/react";
 
 
-export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getUsers }) {
-
+export function Table({ isLoading, TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getUsers }) {
+    // Define the number of rows and columns
+    const skel = [1, 2, 3, 4, 5]
     const [token,] = useContext(tokenContext);
 
     async function DeleteItem(id) {
@@ -76,15 +78,35 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                         </tr>
                     </thead>
                     <tbody>
-                        {}
-                        {TABLE_ROWS.map(
+                        {isLoading ? skel.map((id) => {
+                            const classes = " justify-center items-center  p-5 border-b border-blue-gray-50";
+                            return (
+                                <tr key={id}>
+                                    <td className={classes}>
+                                        <Skeleton className="h-3 w-4/5 rounded-lg" />
+                                    </td>
+                                    <td className={classes}>
+                                        <Skeleton className="h-3 w-4/5 rounded-lg" />
+                                    </td>
+                                    <td className={classes}>
+                                        <Skeleton className="h-3 w-4/5 rounded-lg" />
+                                    </td>
+                                    <td className={classes}>
+                                        <Skeleton className="h-3 w-4/5 rounded-lg" />
+                                    </td>
+                                    <td className={classes}>
+                                        <Skeleton className="h-3 w-4/5 rounded-lg" />
+                                    </td>
+                                </tr>)
+                        }) : TABLE_ROWS.map(
                             (
                                 {
                                     id,
                                     email,
                                     firstName,
                                     lastName,
-                                    profilePhoto
+                                    profilePhoto,
+                                    travelOffice
                                 },
                                 index,
                             ) => {
@@ -114,13 +136,13 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                                                 className="font-normal"
                                             >
                                                 <div className="pl-3">
-                                                    {"Agency" + index}
+                                                    {travelOffice ? travelOffice.name : "Not connected"}
                                                 </div>
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                {profilePhoto?.imageUrl? <Avatar
+                                                {profilePhoto?.imageUrl ? <Avatar
                                                     src={profilePhoto.imageUrl}
                                                     size="md"
                                                     className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
@@ -129,7 +151,7 @@ export function Table({ TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNum
                                                     size="md"
                                                     className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                                                 />}
-                                                
+
                                                 <Typography
                                                     component={'span'}
                                                     variant="small"

@@ -94,8 +94,8 @@ export default function Finance() {
                     <div className="flex justify-between px-1" >
                         <h1 className="font-bold" >Users Balance</h1>
                         <Link to={"/balances"}>
-                            <div className="flex items-center  ">
-                                <h1 className="font">See All</h1>
+                            <div className="flex items-center transition-all duration-300 hover:text-blue-800    ">
+                                <h1 className="font  ">See All</h1>
                                 <ChevronRightIcon className="w-4 h-4" />
                             </div>
                         </Link>

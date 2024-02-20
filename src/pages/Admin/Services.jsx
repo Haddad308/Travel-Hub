@@ -6,6 +6,7 @@ import { ServicesTab } from "../../components/Tabs/ServicesTabs";
 import { SelectedServiceContext } from "../../contexts/ServicesContext";
 import axios from "axios";
 import { tokenContext } from "../../contexts/AuthContext";
+import GetNumberOfPages from "../../Middlewares/GetNumberOfPages";
 
 
 const TABS = [
@@ -52,13 +53,11 @@ export default function Services() {
     
     
     const [services, setServices] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [token,] = useContext(tokenContext);
     const [pageNumber, setPageNumber] = useState(1);
-    const rowsPerPage = 5;
-    const indexFirstItem = (pageNumber - 1) * rowsPerPage;
-    const indexLastItem = pageNumber * rowsPerPage;
-    const rowData = services.slice(indexFirstItem, indexLastItem);
-    const NumberOfPages = Math.ceil(services.length / rowsPerPage);
+    const { rowData, NumberOfPages } = GetNumberOfPages(pageNumber, services, 5)
     const [selectedService,] = useContext(SelectedServiceContext)
 
     const paginate = (pageNumber) => {
@@ -67,6 +66,7 @@ export default function Services() {
 
     async function getService(service, token) {
         setServices([]);
+        setIsLoading(true)
         let data = await axios.get(`http://localhost:3000/api/v1/${service}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -74,10 +74,12 @@ export default function Services() {
         }
         ).catch((error) => {
             console.log(error);
+            setIsLoading(false)
         });
 
         if (data?.status === 200) {
             setServices(data.data)
+            setIsLoading(false)
         }
     }
 
@@ -85,7 +87,6 @@ export default function Services() {
         getService(selectedService,token)
     }, [selectedService,token])
 
-    console.log("Heelp ", rowData);
 
     return (
         <div className="p-6">
@@ -96,6 +97,7 @@ export default function Services() {
                     pageNumber={pageNumber}
                     paginate={paginate}
                     getService={getService}
+                    isLoading={isLoading}
                 />
             </ServicesTab>
         </div>

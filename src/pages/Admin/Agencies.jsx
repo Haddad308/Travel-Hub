@@ -1,39 +1,41 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
-import { Table } from "../../components/Tables/Table";
 import { tokenContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import GetNumberOfPages from "../../Middlewares/GetNumberOfPages";
+import { AgenciesTable } from "../../components/Tables/AgenciesTable";
 
-export default function Users() {
-    const Headers = ["No", "Agency", "User", "Actions"];
+export default function Agencies() {
+    const Headers = ["No", "Agency", "Phone", "City", "Actions"];
     const [token,] = useContext(tokenContext);
-    const [users, SetUsers] = useState([]);
+    const [agencies, SetAgencies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
     const [, setApiError] = useState("");
+    
 
-
-    async function getUsers(token) {
+    async function getAgencies(token) {
+        
         setApiError("");
         setIsLoading(true)
-        let data = await axios.get("http://localhost:3000/api/v1/users?limit=50", {
+        let data = await axios.get("http://localhost:3000/api/v1/travel-offices", {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         }
         ).catch((error) => {
+            console.log(error);
             setApiError(error.message);
             setIsLoading(false)
         });
 
         if (data?.status === 200) {
-            SetUsers(data.data.data)
+            SetAgencies(data.data)
             setIsLoading(false)
         }
     }
 
     useEffect(() => {
-        getUsers(token)
+        getAgencies(token)
     }, [token])
 
     const [pageNumber, setPageNumber] = useState(1);
@@ -41,21 +43,21 @@ export default function Users() {
         setPageNumber(pageNumber);
     };
 
-    const { rowData, NumberOfPages } = GetNumberOfPages(pageNumber, users, 5)
-
+    console.log(agencies);
+    const { rowData, NumberOfPages } = GetNumberOfPages(pageNumber, agencies, 5)
 
     return (
         <div className="p-6">
-            <Table
+            <AgenciesTable
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 TABLE_HEAD={Headers}
                 TABLE_ROWS={rowData}
                 NumberOfPages={NumberOfPages}
                 pageNumber={pageNumber}
                 paginate={paginate}
-                getUsers={getUsers}
-                setIsLoading={setIsLoading}
-                isLoading={isLoading}
+                getAgencies={getAgencies}
             />
         </div>
-    );
+    )
 }
