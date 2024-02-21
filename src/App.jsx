@@ -44,10 +44,10 @@ let routers = createHashRouter([{
     { path: "reports", element: <ProtectRoutes allowedRoles={["Admin"]} > <Reports /></ProtectRoutes> },
 
 
-    { path: "home", element: <ProtectRoutes allowedRoles={["User"]} > <Home /></ProtectRoutes> },
-    { path: "UserReservation", element: <ProtectRoutes allowedRoles={["User"]} > <UserReservation /></ProtectRoutes> },
-    { path: "UserFinance", element: <ProtectRoutes allowedRoles={["User"]} > <UserFinance /></ProtectRoutes> },
-    { path: "UserSettings", element: <ProtectRoutes allowedRoles={["User"]} > <UserSettings /></ProtectRoutes> },
+    { path: "home", element: <ProtectRoutes allowedRoles={["User","TravelAgent"]} > <Home /></ProtectRoutes> },
+    { path: "UserReservation", element: <ProtectRoutes allowedRoles={["User", "TravelAgent"]} > <UserReservation /></ProtectRoutes> },
+    { path: "UserFinance", element: <ProtectRoutes allowedRoles={["User", "TravelAgent"]} > <UserFinance /></ProtectRoutes> },
+    { path: "UserSettings", element: <ProtectRoutes allowedRoles={["User", "TravelAgent"]} > <UserSettings /></ProtectRoutes> },
   ]
 },
 { path: "login", element: <Login /> },

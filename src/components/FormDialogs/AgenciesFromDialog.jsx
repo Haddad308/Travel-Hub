@@ -28,7 +28,7 @@ export default function AgenciesFromDialog({ buttonText, dialogTitle, status, ge
     const [images, setImages] = useState([]);
     const [open, setOpen] = useState(false);
     const [apiError, setApiError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+const [isLoading, setIsLoading] = useState(false);
     const [apiErrorImg, setApiErrorImg] = useState("");
     const handleOpen = () => setOpen(!open);
     const notify = status === "add" ? () => toast.success('Agency Added Successfully.') : () => toast.success('Agency Edited Successfully.')

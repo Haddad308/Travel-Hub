@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { AvatarWithText } from "../General/avatar";
 import {
@@ -22,22 +23,48 @@ import { Link } from "react-router-dom";
 import { HomeIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
 import { LogOutDialog } from "../Tables/logOutDialog";
 import useGetRole from "../../hooks/useGetRole";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { tokenContext } from "../../contexts/AuthContext";
 
 export function Sidebar() {
 
-    const role = useGetRole()
-    const [selected, setSelected] = useState(0);
+    const role = useGetRole();
+    const selected = useRef(0);
+    const [token] = useContext(tokenContext);
+    const [user, setUser] = useState("");
+
     const handleClick = (elementNumber) => {
-        setSelected(elementNumber);
+        selected.current = elementNumber;
+        localStorage.setItem('selectedItem', elementNumber); // Store selected item in localStorage
     };
 
+    async function getUser(token) {
+        let data = await axios.get("http://localhost:3000/api/v1/auth/me", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        ).catch((error) => {
+            console.log(error.message);
+        });
+
+        if (data?.status === 200) {
+            setUser(data.data)
+        }
+    }
+
     useEffect(() => {
-        if (role==="Admin")
-            handleClick(0);
-        else
-            handleClick(8);
-    }, [role])
+        getUser(token); // Assuming getUser is a function to fetch user data
+    }, [token]); // Make sure to include setSelected in the dependencies array if it's a dependency
+
+
+
+    useEffect(() => {
+        const selectedItem = localStorage.getItem('selectedItem'); // Retrieve selected item from localStorage
+        const initialSelectedItem = role === "Admin" ? 0 : 8;
+        selected.current = selectedItem ? parseInt(selectedItem) : initialSelectedItem; // Set selected item from localStorage or default based on role
+    }, [role]);
 
     return (
         <>
@@ -48,7 +75,7 @@ export function Sidebar() {
                 </header>
                 {role === "Admin" ? <List className="text-white" >
                     <Link to={"/"} >
-                        <ListItem selected={selected === 0 ? true : false} onClick={() => { handleClick(0); }}>
+                        <ListItem selected={selected.current === 0 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(0); }}>
                             <ListItemPrefix>
                                 <PresentationChartBarIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -56,7 +83,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/Agencies"} >
-                        <ListItem selected={selected === 1 ? true : false} onClick={() => { handleClick(1); }} >
+                        <ListItem selected={selected.current === 1 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(1); }} >
                             <ListItemPrefix>
                                 <BriefcaseIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -64,7 +91,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/Users"}>
-                        <ListItem selected={selected === 2 ? true : false} onClick={() => { handleClick(2); }}>
+                        <ListItem selected={selected.current === 2 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(2); }}>
                             <ListItemPrefix>
                                 <UsersIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -72,7 +99,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/Services"} >
-                        <ListItem selected={selected === 3 ? true : false} onClick={() => { handleClick(3); }} >
+                        <ListItem selected={selected.current === 3 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(3); }} >
                             <ListItemPrefix>
                                 <WrenchScrewdriverIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -80,7 +107,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/Reservation"}>
-                        <ListItem variant='small' selected={selected === 4 ? true : false} onClick={() => { handleClick(4); }}>
+                        <ListItem variant='small' selected={selected.current === 4 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(4); }}>
                             <ListItemPrefix>
                                 <CalendarIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -88,7 +115,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/Finance"}>
-                        <ListItem selected={selected === 5 ? true : false} onClick={() => { handleClick(5); }}>
+                        <ListItem selected={selected.current === 5 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(5); }}>
                             <ListItemPrefix>
                                 <CurrencyDollarIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -96,7 +123,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/reports"}>
-                        <ListItem selected={selected === 6 ? true : false} onClick={() => { handleClick(6); }}>
+                        <ListItem selected={selected.current === 6 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(6); }}>
                             <ListItemPrefix>
                                 <DocumentChartBarIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -104,7 +131,7 @@ export function Sidebar() {
                         </ListItem>
                     </Link>
                     <Link to={"/Settings"}>
-                        <ListItem selected={selected === 7 ? true : false} onClick={() => { handleClick(7); }}>
+                        <ListItem selected={selected.current === 7 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(7); }}>
                             <ListItemPrefix>
                                 <Cog6ToothIcon className="h-5 w-5" />
                             </ListItemPrefix>
@@ -115,7 +142,7 @@ export function Sidebar() {
                 </List> :
                     <List className="text-white" >
                         <Link to={"/home"} >
-                            <ListItem selected={selected === 8 ? true : false} onClick={() => { handleClick(8); }}>
+                            <ListItem selected={selected.current === 8 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(8); }}>
                                 <ListItemPrefix>
                                     <HomeIcon className="h-5 w-5" />
                                 </ListItemPrefix>
@@ -123,7 +150,7 @@ export function Sidebar() {
                             </ListItem>
                         </Link>
                         <Link to={"/UserReservation"}>
-                            <ListItem selected={selected === 9 ? true : false} onClick={() => { handleClick(9); }}>
+                            <ListItem selected={selected.current === 9 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(9); }}>
                                 <ListItemPrefix>
                                     <WalletIcon className="h-5 w-5" />
                                 </ListItemPrefix>
@@ -131,7 +158,7 @@ export function Sidebar() {
                             </ListItem>
                         </Link>
                         <Link to={"/UserFinance"}>
-                            <ListItem selected={selected === 10 ? true : false} onClick={() => { handleClick(10); }}>
+                            <ListItem selected={selected.current === 10 ? true : false} onClick={(e) => { e.stopPropagation(); handleClick(10); }}>
                                 <ListItemPrefix>
                                     <CurrencyDollarIcon className="h-5 w-5" />
                                 </ListItemPrefix>
@@ -139,23 +166,26 @@ export function Sidebar() {
                             </ListItem>
                         </Link>
                         <Link to={"/UserSettings"}>
-                            <ListItem selected={selected === 11 ? true : false} onClick={() => { handleClick(11); }}>
+                            <ListItem selected={selected.current === 11 ? true : false} onClick={(e) => {
+                                e.stopPropagation();
+
+                                handleClick(11);
+                            }}>
                                 <ListItemPrefix>
                                     <Cog6ToothIcon className="h-5 w-5" />
                                 </ListItemPrefix>
                                 Setting
                             </ListItem>
                         </Link>
-
                         <LogOutDialog></LogOutDialog>
                     </List>}
                 <footer className="absolute w-full  bottom-0 p-3" >
-                    <AvatarWithText size={"md"} img={"https://docs.material-tailwind.com/img/face-2.jpg"}>
+                    <AvatarWithText size={"lg"} img={user?.profilePhoto?.imageUrl} isBordered={true} color={"success"}>
                         <Typography color="white" variant='small' >
-                            Lania Andrew
+                            {user.firstName + " " + user.lastName}
                         </Typography>
                         <Typography variant="small" color="white" className="text-[#E8E8E8] font-thin">
-                            lania.andrew@gmail.com
+                            {user.email}
                         </Typography>
                     </AvatarWithText>
                 </footer>

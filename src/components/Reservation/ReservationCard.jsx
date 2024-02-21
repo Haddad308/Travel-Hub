@@ -12,7 +12,7 @@ export default function ReservationCard({ AgencyName, AgencyEmail, AgencyContact
                 <p>13/1/2024</p>
             </div>
             <div className=" flex justify-between items-center px-6 " >
-                <AvatarWithText size={"lg"} img={"https://docs.material-tailwind.com/img/face-2.jpg"} >
+                <AvatarWithText size={"lg"} img={"https://docs.material-tailwind.com/img/face-2.jpg"} isBordered={true} >
                     <h1 className="font-bold mb-1"  >
                         {AgencyName}
                     </h1>

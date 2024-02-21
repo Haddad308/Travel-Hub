@@ -158,7 +158,7 @@ export default function UserFormDialog({ text, status, type, getUsers, UserId })
             password: "",
             firstName: "",
             lastName: "",
-            travelOfficeId: null
+            travelOfficeId: ""
         },
         validationSchema: () => {
             if (status === "add") {

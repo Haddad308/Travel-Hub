@@ -7,14 +7,13 @@ import {
     CardBody,
     CardFooter,
     Tooltip,
-    Avatar,
 } from "@material-tailwind/react";
 import { SimplePagination } from "../TableComponents/Pagination";
 import { DeleteDialog } from "../TableComponents/DeleteDialog";
 import { useContext } from "react";
 import { tokenContext } from "../../contexts/AuthContext";
 import UserFormDialog from "../FormDialogs/UserFormDialog";
-import { Skeleton } from "@nextui-org/react";
+import { Avatar, Skeleton } from "@nextui-org/react";
 
 
 export function Table({ isLoading, TABLE_HEAD, TABLE_ROWS, NumberOfPages, paginate, pageNumber, getUsers }) {
@@ -145,12 +144,8 @@ export function Table({ isLoading, TABLE_HEAD, TABLE_ROWS, NumberOfPages, pagina
                                                 {profilePhoto?.imageUrl ? <Avatar
                                                     src={profilePhoto.imageUrl}
                                                     size="md"
-                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                                /> : <Avatar
-                                                    src="https://cdn.pixabay.com/photo/2012/04/26/19/43/profile-42914_640.png"
-                                                    size="md"
-                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                                />}
+                                                    isBordered={true}
+                                                /> : <Avatar showFallback src='https://images.unsplash.com/broken' />}
 
                                                 <Typography
                                                     component={'span'}
